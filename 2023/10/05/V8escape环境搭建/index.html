@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head prefix="og: https://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  
+  <title>V8 escape环境搭建(一) - Jsjsj</title>
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    <link rel='manifest' href='/manifest.json'>
+  
+
+  
+  
+  
+  <meta property="og:title" content="V8 escape环境搭建(一) - Jsjsj" />
+  
+  <meta property="og:type" content="article" />
+  
+  <meta property="og:url" content="https://jsjsj.top/2023/10/05/V8escape%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.html" />
+  
+  <meta property="og:image" content="/favicon.png" />
+  
+  <meta property="og:article:published_time" content="2023-10-05T12:33:50.000Z" />
+  
+  <meta property="og:article:author" content="Mr. Jsjsj" />
+  
+  
+
+  
+<link rel="stylesheet" href="/css/var.css">
+
+  
+<link rel="stylesheet" href="/css/main.css">
+
+  
+<link rel="stylesheet" href="/css/typography.css">
+
+  
+<link rel="stylesheet" href="/css/code-highlighting.css">
+
+  
+<link rel="stylesheet" href="/css/components.css">
+
+  
+<link rel="stylesheet" href="/css/nav.css">
+
+  
+<link rel="stylesheet" href="/css/paginator.css">
+
+  
+<link rel="stylesheet" href="/css/footer.css">
+
+  
+<link rel="stylesheet" href="/css/post-list.css">
+
+  
+  
+<link rel="stylesheet" href="/css/rainbow-banner.css">
+
+  
+  
+  
+<link rel="stylesheet" href="/css/toc.css">
+
+  
+  
+    
+<link rel="stylesheet" href="/css/giscus.css">
+
+  
+  
+  
+  
+<link rel="stylesheet" href="/css/post.css">
+
+  
+  
+  
+  
+  
+
+  
+<meta name="generator" content="Hexo 7.0.0-rc2"></head>
+    <body
+        data-color-scheme="dark"
+        data-uppercase-categories="true"
+        
+        data-rainbow-banner="true"
+        data-rainbow-banner-shown="auto"
+        data-rainbow-banner-month="6"
+        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
+        
+        data-config-root="/"
+        
+        data-toc="true"
+        data-toc-max-depth="2"
+        
+        
+    >
+        <nav id="theme-nav">
+    <div class="inner">
+        <a class="title" href="/">Blog</a>
+        <div class="nav-arrow"></div>
+        <div class="nav-items">
+            <a class="nav-item nav-item-home" href="/">Home</a>
+            
+            
+            <a class="nav-item" href="/archives">Archives</a>
+            
+            
+            
+            <a class="nav-item" href="/friends">Friends</a>
+            
+            
+            
+            <a class="nav-item" href="/projects">Projects</a>
+            
+            
+            
+            <a class="nav-item" href="/about">About</a>
+            
+            
+            
+            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/jsjsj1" target="_blank" aria-label="GitHub">&nbsp;</a>
+            
+            
+            
+            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
+            
+            
+        </div>
+    </div>
+</nav>
+        
+<article class="post">
+    <div class="meta">
+        
+        <div class="categories text-uppercase">
+        
+            <a href="/categories/pwn/">pwn</a>
+        
+        </div>
+        
+
+        
+        <div class="date" id="date">
+            <span>October</span>
+            <span>5,</span>
+            <span>2023</span>
+        </div>
+        
+
+        <h2 class="title">V8 escape环境搭建(一)</h2>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="content">
+        <p>以后想准备深入研究v8，这里先把环境搭建下和一些看到v8类型的题如何处理的过程，</p>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p><strong>虚拟机版本为 ubuntu 18.04</strong></p>
+<p>1.编译 v8</p>
+<p>先下载chrom开发工具depot_tools,它用来进行v8编译，类似gcc</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://chromium.googlesource.com/chromium/tools/depot_tools.git</span><br></pre></td></tr></table></figure>
+
+<p>然后把它添加到环境变量里</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:&lt;path to depot_tools&gt;</span><br></pre></td></tr></table></figure>
+
+<p>然后挂代理（不挂代理的话后面fetch v8和依赖会被墙毕竟是google），</p>
+<p>安装ninja报错，将版本调到138bff28，将DEPOT_TOOLS_UPDATE设置为0，然后gclient</p>
+<p>这个一定要执行，不然后面ninja报错导致环境搭建不起来（一定要执行！！，做题的时候，在拉去版本之前也要执行）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard 138bff28</span><br><span class="line"><span class="built_in">export</span> DEPOT_TOOLS_UPDATE=0</span><br><span class="line">gclient</span><br></pre></td></tr></table></figure>
+
+<p>下一步下载v8</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fetch v8</span><br><span class="line">或者fetch --force v8</span><br></pre></td></tr></table></figure>
+
+<p>然后进入到v8目录下，如果在比赛中这里会根据题目给的版本进行git checkout 版本，第二步<code>gclient sync -D</code> 下载相关依赖，<code>-D</code> 会删除不需要的依赖</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> v8</span><br><span class="line">git checkout  7.6.303.28</span><br><span class="line">gclient <span class="built_in">sync</span> -D</span><br></pre></td></tr></table></figure>
+
+<p>报错的话就执行这句：gclient config <a target="_blank" rel="noopener" href="https://chromium.googlesource.com/v8/v8">https://chromium.googlesource.com/v8/v8</a></p>
+<p>下面来介绍题目方法导入</p>
+<p>如果比赛给了一个Chrome浏览器，我🚪可以在浏览器里输入<code>chrome://version</code> 查看版本</p>
+<p>然后打开 github 的 <a target="_blank" rel="noopener" href="https://github.com/chromium/chromium">chrome</a> 项目，搜索版本号并切换至相应版本。</p>
+<p><img src="/images/v8image/1.png"></p>
+<p>然后在项目根目录下的 <code>DEPS</code> 文件中查看 <code>V8</code> 版本：</p>
+<p><img src="/images/v8image/2.png"></p>
+<p>如果题目给了 <code>diff</code> 文件需要将 patch 到项目中。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git apply ./oob.diff</span><br></pre></td></tr></table></figure>
+
+<p>diff文件patch项目里在v8目录下，然后安装相关依赖（如果遇到下载字体未响应问题需要添加 <code>--no-chromeos-fonts</code> 参数），每次运行不同版本都要安装依赖（也就是不同题版本会不一样），这样gdb使用调试的时候就不会报错了</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./build/install-build-deps.sh</span><br><span class="line">或者./build/install-build-deps.sh --no-chromeos-fonts</span><br></pre></td></tr></table></figure>
+
+<p>下面开始编译v8，选择release版本，因为debug版本在进行漏洞调试会有检测，一般都是用release</p>
+<p>编译v8：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./tools/dev/gm.py x64.release</span><br></pre></td></tr></table></figure>
+
+<p>编译生成的 <code>d8</code> 在 <code>./out/x64.release/d8</code> 中。</p>
+<h3 id="题目拉取方法，以2019-oob为例"><a href="#题目拉取方法，以2019-oob为例" class="headerlink" title="题目拉取方法，以2019 oob为例"></a>题目拉取方法，以2019 oob为例</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard 138bff28</span><br><span class="line"><span class="built_in">export</span> DEPOT_TOOLS_UPDATE=0</span><br><span class="line">gclient</span><br><span class="line">fetch v8 之前fetch就执行fetch --force v8</span><br><span class="line"><span class="built_in">cd</span> v8</span><br><span class="line">git reset --hard 6dc88c191f5ecc5389dc26efa3ca0907faef3598				<span class="comment">#设置v8分支</span></span><br><span class="line">gclient <span class="built_in">sync</span></span><br><span class="line">git apply ../oob.diff</span><br><span class="line">./build/install-build-deps.sh --no-chromeos-fonts</span><br><span class="line">tools/dev/gm.py x64.release</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="调试-v8"><a href="#调试-v8" class="headerlink" title="调试 v8"></a>调试 v8</h3><p>在 <code>~/.gdbinit</code> 添加 <code>v8</code> 的调试插件：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> /path/to/v8/tools/gdbinit</span><br><span class="line"><span class="built_in">source</span> /path/to/v8/gdb-v8-support.py</span><br></pre></td></tr></table></figure>
+
+<p>&#x2F;path&#x2F;to&#x2F;是自己到达v8目录的一些路径</p>
+<p>常见参数：</p>
+<p>–allow-natives-syntax 开启原生API (用的比较多)<br>–trace-turbo 跟踪生成TurboFan IR<br>–print-bytecode 打印生成的bytecode<br>–shell 运行脚本后切入交互模式<br>更多参数可以参考 –help<br>调试 js 脚本时可以采用如下命令：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gdb ./d8</span><br><span class="line">r --allow-natives-syntax --shell ./exp.js</span><br></pre></td></tr></table></figure>
+
+<p>js中常见的⼀些调试技巧：</p>
+<p>在js中写⼊断点：**%SystemBreak();** ，如果不在调试模式的话, 程序直接中断, 如果在调试器中, 会被调试器识别到<br>并且断下来。<br>打印出对象的地址和对应的信息: <strong>%DebugPrint(var_name);</strong><br>调试时输入 <strong>job + DebugPrint</strong>打印的对象地址 可以打印出对象的结构。</p>
+<h3 id="安装-turbolizer"><a href="#安装-turbolizer" class="headerlink" title="安装 turbolizer"></a>安装 turbolizer</h3><p><code>turbolizer</code> 是一个可视化分析 JS 优化的工具，安装命令如下：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /path/to/v8/tools/turbolizer</span><br><span class="line">sudo npm install n -g</span><br><span class="line">sudo n 16.20.0</span><br><span class="line">sudo npm i</span><br><span class="line">sudo npm run-script build</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>由于 Ubuntu18.04 默认的 <code>node</code> 版本过低，需要安装 <code>16.20.0</code> 版本。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo npm i</span><br></pre></td></tr></table></figure>
+
+<p>最后需要启动一个 web 服务器，根据需要 8000 可以换成其它端口。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m SimpleHTTPServer 8000</span><br></pre></td></tr></table></figure>
+
+<p>编写一个 js 脚本：<br><code>%OptimizeFunctionOnNextCall</code> 内置函数可以直接触发强行触发优化。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">add</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//%OptimizeFunctionOnNextCall(add);</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10000000</span>; i++) &#123;</span><br><span class="line">    <span class="title function_">add</span>(i, i + <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>运行 js 脚本并使用 <code>--trace-turbo</code> 参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./d8 --trace-turbo --allow-natives-syntax ./test.js</span><br></pre></td></tr></table></figure>
+
+<p>在浏览器中访问 <code>http://127.0.0.1:8000/path/to/v8/tools/turbolizer/</code> ，然后在其中打开该文件就可以进行分析。</p>
+<p>先占个坑稍后来补全。。。。</p>
+
+    </div>
+
+    
+    <div class="about">
+        <h1>About this Post</h1>
+        <div class="details">
+            <p>This post is written by Mr. Jsjsj, licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc/4.0">CC BY-NC 4.0</a>.</p>
+        </div>
+        
+        <p class="tags">
+            
+            <i class="icon"></i>
+            <a href="/tags/pwn/" class="tag">#pwn</a>
+        </p>
+        
+    </div>
+    
+
+    <div class="container post-prev-next">
+        
+        <a href="/2023/10/12/%E6%AF%8F%E5%91%A8%E5%AD%A6%E4%B9%A0%E5%91%A8%E8%AE%B0/" class="next">
+            <div>
+                <div class="text">
+                    <p class="label">Next</p>
+                    <h3 class="title">每周学习周记</h3>
+                </div>
+            </div>
+        </a>
+        
+        
+        <a href="/2023/10/04/wp/" class="prev">
+            <div>
+                <div class="text">
+                    <p class="label">Previous</p>
+                    <h3 class="title">2023 xxx比赛关于学弟给的Rev wp</>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+    
+        
+        
+        <script src="https://giscus.app/client.js" data-repo="MrWillCom/MrWillCom.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnkyODg5NTc5MTA=" data-category="Announcements" data-category-id="DIC_kwDOETkl1s4COQZm" data-mapping="pathname" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async> </script>
+        
+    
+</article>
+
+        <footer>
+    <div class="inner">
+        <div class="links">
+            
+            <div class="group">
+                <h2 class="title">Blog</h2>
+                
+                <a href="/" class="item">Blog</a>
+                
+                <a href="/archives" class="item">Archives</a>
+                
+                <a href="/tags" class="item">Tags</a>
+                
+                <a href="/categories" class="item">Categories</a>
+                
+                <a href="/search" class="item">Search</a>
+                
+                <a href="/friends" class="item">Friends</a>
+                
+                <a href="/projects" class="item">Projects</a>
+                
+                <a href="/resume" class="item">Resume</a>
+                
+                <a href="/about" class="item">About</a>
+                
+                <a href="/atom.xml" class="item">RSS</a>
+                
+            </div>
+            
+            <div class="group">
+                <h2 class="title">Me</h2>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/jsjsj1" class="item">GitHub</a>
+                
+                <a href="904815041@qq.com" class="item">Email</a>
+                
+            </div>
+            
+        </div>
+        <span>&copy; 2023 Mr. Jsjsj<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
+        
+        
+            <br>
+            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
+                <label>
+                    <input type="radio" value="light">
+                    <span>Light</span>
+                </label>
+                <label>
+                    <input type="radio" value="dark">
+                    <span>Dark</span>
+                </label>
+                <label>
+                    <input type="radio" value="auto">
+                    <span>Auto</span>
+                </label>
+            </div>
+        
+    </div>
+</footer>
+
+
+        
+<script src="/js/main.js"></script>
+
+        
+         
+        
+<script src="//code.tidio.co/6bkvqlfpdbtihnufei8yxpsvf98bq5gv.js"></script>
+ 
+        
+<script src="/js/tidio.js"></script>
+
+        
+        
+
+        
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            window.addEventListener('load', () => {
+                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
+                ScrollReveal().reveal('.post-list-item .cover-img img')
+                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
+            })
+        </script>
+        
+    </body>
+</html>
