@@ -40,15 +40,17 @@
   </entry>
   
   <entry>
-    <title>pwn</title>
-    <link href="https://jsjsj.top/2023/10/18/pwn/"/>
-    <id>https://jsjsj.top/2023/10/18/pwn/</id>
+    <title>llvm pass pwn</title>
+    <link href="https://jsjsj.top/2023/10/18/llvmpasspwn/"/>
+    <id>https://jsjsj.top/2023/10/18/llvmpasspwn/</id>
     <published>2023-10-18T03:24:31.000Z</published>
-    <updated>2023-10-18T03:24:31.688Z</updated>
+    <updated>2023-10-20T02:10:32.720Z</updated>
     
     
     
     
+    
+    <category term="pwn" scheme="https://jsjsj.top/tags/pwn/"/>
     
   </entry>
   
