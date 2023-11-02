@@ -1,166 +1,298 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head prefix="og: https://ogp.me/ns#">
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light dark">
-  
-  <title>Tea&amp;XTea&amp;XXTea解密脚本总结 - Jsjsj</title>
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    <link rel='manifest' href='/manifest.json'>
-  
-
-  
-  
-  
-  <meta property="og:title" content="Tea&amp;XTea&amp;XXTea解密脚本总结 - Jsjsj" />
-  
-  <meta property="og:type" content="article" />
-  
-  <meta property="og:url" content="https://jsjsj.top/2023/10/17/tea&amp;xtea&amp;xxtea%E8%A7%A3%E5%AF%86%E8%84%9A%E6%9C%AC%E6%80%BB%E7%BB%93/index.html" />
-  
-  <meta property="og:image" content="/favicon.png" />
-  
-  <meta property="og:article:published_time" content="2023-10-17T10:33:18.000Z" />
-  
-  <meta property="og:article:author" content="Mr. Jsjsj" />
-  
-  
-
-  
-<link rel="stylesheet" href="/css/var.css">
-
-  
-<link rel="stylesheet" href="/css/main.css">
-
-  
-<link rel="stylesheet" href="/css/typography.css">
-
-  
-<link rel="stylesheet" href="/css/code-highlighting.css">
-
-  
-<link rel="stylesheet" href="/css/components.css">
-
-  
-<link rel="stylesheet" href="/css/nav.css">
-
-  
-<link rel="stylesheet" href="/css/paginator.css">
-
-  
-<link rel="stylesheet" href="/css/footer.css">
-
-  
-<link rel="stylesheet" href="/css/post-list.css">
-
-  
-  
-<link rel="stylesheet" href="/css/rainbow-banner.css">
-
-  
-  
-  
-<link rel="stylesheet" href="/css/toc.css">
-
-  
-  
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Looking">
+    <meta name="description" content="Looking up at the sky.🍬🍬🍓💕">
+    <meta name="author" content="Jsjsj">
     
-<link rel="stylesheet" href="/css/giscus.css">
+    <title>
+        
+            Tea&amp;XTea&amp;XXTea解密脚本总结 |
+        
+        Jsjsj Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
 
-  
-  
-  
-  
-<link rel="stylesheet" href="/css/post.css">
+    
+        <link rel="shortcut icon" href="/images/log.jpg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
 
-  
-  
-  
-  
-  
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
 
-  
-<meta name="generator" content="Hexo 7.0.0-rc2"></head>
-    <body
-        data-color-scheme="Dark"
-        data-uppercase-categories="true"
-        
-        data-rainbow-banner="true"
-        data-rainbow-banner-shown="auto"
-        data-rainbow-banner-month="6"
-        data-rainbow-banner-colors="#e50000,#ff8d00,#ffee00,#008121,#004cff,#760188"
-        
-        data-config-root="/"
-        
-        data-toc="true"
-        data-toc-max-depth="2"
-        
-        
-    >
-        <nav id="theme-nav">
-    <div class="inner">
-        <a class="title" href="/">Jsjsj&#39;s Blog</a>
-        <div class="nav-arrow"></div>
-        <div class="nav-items">
-            <a class="nav-item nav-item-home" href="/">Home</a>
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"jsjsj.top","root":"/","language":"en","path":"search.json"}
+    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":true,"layout":"right"},"style":{"primary_color":"#0066cc","logo":"/images/log.jpg","favicon":"/images/log.jpg","avatar":"/images/log.jpg","first_screen":{"enable":true,"background_img":"/images/bg.svg","description":null,"hitokoto":true},"scroll":{"progress_bar":true,"percent":true}},"local_search":{"enable":false,"preload":false},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"comment":{"enable":false,"use":"valine","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.21"},"waline":{"server_url":null,"reaction":false,"version":2},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false}},"post":{"author_label":{"enable":true,"auto":true,"custom_label_list":["Trainee","Engineer","Architect"]},"word_count":{"wordcount":false,"min2read":false},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":false,"reward":{"enable":false,"img_link":null,"text":null}},"website_count":{"busuanzi_count":{"enable":false,"site_uv":false,"site_pv":false,"page_pv":false}},"version":"3.8.6"}
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
+    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
+    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original article title","author":"Original article author","link":"Original article link"}
+  </script>
+<meta name="generator" content="Hexo 7.0.0-rc2"><link rel="alternate" href="/atom.xml" title="Jsjsj" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+</div>
+
+
+<main class="page-container border-box">
+
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
             
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left border-box">
             
-            <a class="nav-item" href="/archives">Archives</a>
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/log.jpg">
+                </a>
             
-            
-            
-            <a class="nav-item" href="/tags">Tags</a>
-            
-            
-            
-            <a class="nav-item" href="/friends">Friends</a>
-            
-            
-            
-            <a class="nav-item" href="/about">About</a>
-            
-            
-            
-            <a class="nav-item nav-item-github nav-item-icon" href="https://github.com/jsjsj1" target="_blank" aria-label="GitHub">&nbsp;</a>
-            
-            
-            
-            <a class="nav-item nav-item-search nav-item-icon" href="/search" target="_blank" aria-label="Search">&nbsp;</a>
-            
-            
+            <a class="site-name border-box" href="/">
+               Jsjsj Blog
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/tags"
+                            >
+                                TAGS
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/categories"
+                            >
+                                CATEGORIES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/links"
+                            >
+                                LINKS
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/changelog"
+                            >
+                                CHANGELOG
+                            </a>
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
         </div>
     </div>
-</nav>
-        
-<article class="post">
-    <div class="meta">
-        
-        <div class="categories text-uppercase">
-        
-            <a href="/categories/Reverse/">Reverse</a>
-        
-        </div>
-        
 
-        
-        <div class="date" id="date">
-            <span>October</span>
-            <span>17,</span>
-            <span>2023</span>
-        </div>
-        
-
-        <h2 class="title">Tea&amp;XTea&amp;XXTea解密脚本总结</h2>
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/tags">TAGS</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/categories">CATEGORIES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/links">LINKS</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/changelog">CHANGELOG</a>
+                </li>
+            
+        </ul>
     </div>
 
-    <div class="divider"></div>
+    <div class="window-mask"></div>
 
-    <div class="content">
-        <p>##总结下常用的tea系列解密包括tea、xtea、xxtea解密，详细步骤就不解释了</p>
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+
+                
+
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+
+        <div class="article-content-container border-box">
+
+            
+
+            <div class="article-content-bottom border-box">
+                
+                    <div class="article-title">
+                        Tea&amp;XTea&amp;XXTea解密脚本总结
+                    </div>
+                
+
+                
+                    <div class="article-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/log.jpg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author">
+                                <span class="name">Jsjsj</span>
+                                
+                                    <span class="author-label">Lv3</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="article-meta-info-container border-box post">
+    <div class="article-meta-info border-box">
+        
+
+
+        
+            <span class="meta-info-item article-create-date">
+                <i class="icon fa-solid fa-calendar-check"></i>&nbsp;
+                <span class="pc">2023-10-17 18:33:18</span>
+                <span class="mobile">2023-10-17 18:33</span>
+            </span>
+
+            <span class="meta-info-item article-update-date">
+                <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                <span class="pc" data-updated="Tue Oct 17 2023 18:46:39 GMT+0800">2023-10-17 18:46:39</span>
+            </span>
+        
+
+        
+            <span class="meta-info-item article-category border-box"><i class="icon fas fa-folder"></i>&nbsp;
+                <ul class="article-category-ul">
+                    
+                            <li class="category-item"><a href="/categories/Reverse/">Reverse</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+            <span class="article-tag meta-info-item border-box">
+                <i class="icon fas fa-tags"></i>&nbsp;
+                <ul class="article-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/Reverse/">Reverse</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+        
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="article-content keep-markdown-body">
+                    
+
+                    <p>##总结下常用的tea系列解密包括tea、xtea、xxtea解密，详细步骤就不解释了</p>
 <h2 id="Tea加解密"><a href="#Tea加解密" class="headerlink" title="Tea加解密"></a>Tea加解密</h2><p>tea加密脚本，C语言版本：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdint.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">tea_encrypt</span><span class="params">(<span class="type">uint32_t</span>* v, <span class="type">uint32_t</span>* k)</span> &#123;</span><br><span class="line">    <span class="type">uint32_t</span> v0 = v[<span class="number">0</span>], v1 = v[<span class="number">1</span>];</span><br><span class="line">    <span class="type">uint32_t</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="type">uint32_t</span> delta = <span class="number">0x9e3779b9</span>;</span><br><span class="line">    <span class="type">uint32_t</span> k0 = k[<span class="number">0</span>], k1 = k[<span class="number">1</span>], k2 = k[<span class="number">2</span>], k3 = k[<span class="number">3</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">32</span>; i++) &#123;</span><br><span class="line">        sum += delta;</span><br><span class="line">        v0 += ((v1 &lt;&lt; <span class="number">4</span>) + k0) ^ (v1 + sum) ^ ((v1 &gt;&gt; <span class="number">5</span>) + k1);</span><br><span class="line">        v0 = v0 &amp; <span class="number">0xFFFFFFFF</span>;</span><br><span class="line">        v1 += ((v0 &lt;&lt; <span class="number">4</span>) + k2) ^ (v0 + sum) ^ ((v0 &gt;&gt; <span class="number">5</span>) + k3);</span><br><span class="line">        v1 = v1 &amp; <span class="number">0xFFFFFFFF</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    v[<span class="number">0</span>] = v0;</span><br><span class="line">    v[<span class="number">1</span>] = v1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">uint32_t</span> v[<span class="number">2</span>] = &#123;<span class="number">0x01234567</span>, <span class="number">0x89abcdef</span>&#125;; <span class="comment">// Plaintext (64 bits)</span></span><br><span class="line">    <span class="type">uint32_t</span> k[<span class="number">4</span>] = &#123;<span class="number">0x01234567</span>, <span class="number">0x89abcdef</span>, <span class="number">0xfedcba98</span>, <span class="number">0x76543210</span>&#125;; <span class="comment">// Key (128 bits)</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Original: v0 = %08x, v1 = %08x\n&quot;</span>, v[<span class="number">0</span>], v[<span class="number">1</span>]);</span><br><span class="line">    </span><br><span class="line">    tea_encrypt(v, k);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Encrypted: v0 = %08x, v1 = %08x\n&quot;</span>, v[<span class="number">0</span>], v[<span class="number">1</span>]);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
@@ -190,136 +322,255 @@
 <p>确保将 “YourCipherTextHere” 和 “YourEncryptionKeyHere” 替换为实际的XXTEA加密密文和密钥。这个脚本手动实现了XXTEA的解密算法。</p>
 <p>总结：很多比赛的关于xtea系列的加密都是没有魔改的，有时候我们只需找到加密的密文和密钥就可以选择对应的脚本进行解密了，这里简单记录下，没有过多的记录</p>
 
-    </div>
-
-    
-    <div class="about">
-        <h1>About this Post</h1>
-        <div class="details">
-            <p>This post is written by Mr. Jsjsj, licensed under <a href="https://jsjsj.top/">Jsjsj blog</a>.</p>
-        </div>
-        
-        <p class="tags">
-            
-            <i class="icon"></i>
-            <a href="/tags/Reverse/" class="tag">#Reverse</a>
-        </p>
-        
-    </div>
-    
-
-    <div class="container post-prev-next">
-        
-        <a href="/2023/10/18/llvmpasspwn/" class="next">
-            <div>
-                <div class="text">
-                    <p class="label">Next</p>
-                    <h3 class="title">llvm pass pwn</h3>
                 </div>
-            </div>
-        </a>
-        
-        
-        <a href="/2023/10/14/2023%20Hitcon%20CTF%20The%20Blade%20Reverse/" class="prev">
-            <div>
-                <div class="text">
-                    <p class="label">Previous</p>
-                    <h3 class="title">2023 Hitcon CTF The Blade Reverse</>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/Reverse/">Reverse</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                    </div>
                 </div>
+
+                
+
+                
+                    <div class="article-nav">
+                        
+                            <div class="article-prev">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2023/10/18/llvmpasspwn/"
+                                   title="llvm pass pwn"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                      <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                            <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">llvm pass pwn</span>
+                                        <span class="post-nav-item">Prev posts</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="article-next">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2023/10/14/2023%20Hitcon%20CTF%20The%20Blade%20Reverse/"
+                                   title="2023 Hitcon CTF The Blade Reverse"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">2023 Hitcon CTF The Blade Reverse</span>
+                                        <span class="post-nav-item">Next posts</span>
+                                    </span>
+                                            <span class="right arrow-icon flex-center">
+                                      <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+
+
+
+
+                
             </div>
-        </a>
+        </div>
+
         
     </div>
+</div>
 
-    
-        
-        
-        <script src="https://giscus.app/client.js" data-repo="MrWillCom/MrWillCom.github.io" data-repo-id="MDEwOlJlcG9zaXRvcnkyODg5NTc5MTA=" data-category="Announcements" data-category-id="DIC_kwDOETkl1s4COQZm" data-mapping="pathname" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" async> </script>
-        
-    
-</article>
 
-        <footer>
-    <div class="inner">
-        <div class="links">
-            
-            <div class="group">
-                <h2 class="title">Blog</h2>
-                
-                <a href="/" class="item">Blog</a>
-                
-                <a href="/archives" class="item">Archives</a>
-                
-                <a href="/tags" class="item">Tags</a>
-                
-                <a href="/categories" class="item">Categories</a>
-                
-                <a href="/search" class="item">Search</a>
-                
-                <a href="/friends" class="item">Friends</a>
-                
-                <a href="/about" class="item">About</a>
-                
-                <a href="/atom.xml" class="item">RSS</a>
                 
             </div>
+
+        </div>
+
+        <div class="page-main-content-bottom border-box">
             
-            <div class="group">
-                <h2 class="title">Me</h2>
+<footer class="footer border-box">
+    <div class="border-box website-info-box default">
+        
+            <div class="copyright-info info-item default">
+                &copy;&nbsp;<span>2020</span>&nbsp;-&nbsp;2023
                 
-                <a target="_blank" rel="noopener" href="https://github.com/jsjsj1" class="item">GitHub</a>
-                
-                <a href="904815041@qq.com" class="item">Email</a>
+                    &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">Jsjsj</a>
                 
             </div>
+
+            <div class="theme-info info-item default">
+                Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+            </div>
+
+            
+
+            
+        
+
+        <div class="count-item info-item default">
+            
+
+            
+
             
         </div>
-        <span>&copy; 2023 Mr. Jsjsj<br>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> </span>
-        
-        
-            <br>
-            <div class="color-scheme-toggle" role="radiogroup" id="theme-color-scheme-toggle">
-                <label>
-                    <input type="radio" value="light">
-                    <span>Light</span>
-                </label>
-                <label>
-                    <input type="radio" value="dark">
-                    <span>Dark</span>
-                </label>
-                <label>
-                    <input type="radio" value="auto">
-                    <span>Auto</span>
-                </label>
-            </div>
-        
     </div>
 </footer>
 
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="tools-list border-box">
+        <!-- PC TOC show toggle -->
+        
+
+        <!-- PC go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
 
         
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+
+    <!-- tablet toc -->
+    
+</main>
+
+
+
+<!-- common -->
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/dark-light-toggle.js"></script>
+
 <script src="/js/main.js"></script>
 
-        
-         
-        
-<script src="//code.tidio.co/6bkvqlfpdbtihnufei8yxpsvf98bq5gv.js"></script>
- 
-        
-<script src="/js/tidio.js"></script>
+<script src="/js/libs/anime.min.js"></script>
 
+
+<!-- local-search -->
+
+
+<!-- code-block -->
+
+    
+<script src="/js/code-block.js"></script>
+
+
+
+<!-- lazyload -->
+
+
+<div class="">
+    
+        <!-- post-helper -->
         
+<script src="/js/post/post-helper.js"></script>
+
+
+        <!-- toc -->
         
 
+        <!-- copyright-info -->
         
-        <script src="https://unpkg.com/scrollreveal"></script>
-        <script>
-            window.addEventListener('load', () => {
-                ScrollReveal({ delay: 250, reset: true, easing: 'cubic-bezier(0, 0, 0, 1)' })
-                ScrollReveal().reveal('.post-list-item .cover-img img')
-                ScrollReveal().reveal('.post-list-item, .card, .content p img, .content .block-large img', { distance: '60px', origin: 'bottom', duration: 800 })
-            })
-        </script>
+
+        <!-- share -->
         
-    </body>
+    
+
+    <!-- category-page -->
+    
+
+    <!-- links-page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+
+
+</body>
 </html>
