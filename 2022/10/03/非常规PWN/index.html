@@ -35,7 +35,7 @@
     <script class="keep-theme-configurations">
     const KEEP = window.KEEP || {}
     KEEP.hexo_config = {"hostname":"jsjsj.top","root":"/","language":"en","path":"search.json"}
-    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":true,"layout":"right"},"style":{"primary_color":"#0066cc","logo":"/images/log.jpg","favicon":"/images/log.jpg","avatar":"/images/log.jpg","first_screen":{"enable":true,"background_img":"/images/bg.svg","description":null,"hitokoto":true},"scroll":{"progress_bar":true,"percent":true}},"local_search":{"enable":false,"preload":false},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"comment":{"enable":false,"use":"valine","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.21"},"waline":{"server_url":null,"reaction":false,"version":2},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false}},"post":{"author_label":{"enable":true,"auto":true,"custom_label_list":["Trainee","Engineer","Architect"]},"word_count":{"wordcount":false,"min2read":false},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":false,"reward":{"enable":false,"img_link":null,"text":null}},"website_count":{"busuanzi_count":{"enable":false,"site_uv":false,"site_pv":false,"page_pv":false}},"version":"3.8.6"}
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"style":{"primary_color":"#0066cc","logo":"/images/log.jpg","favicon":"/images/log.jpg","avatar":"/images/log.jpg","first_screen":{"enable":true,"background_img":"/images/bg.svg","description":null,"hitokoto":true},"scroll":{"progress_bar":true,"percent":true}},"local_search":{"enable":true,"preload":true},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"comment":{"enable":true,"use":"valine","valine":{"appid":"aIJeYmBe1sYhsmeD0Wx4ImDN-MdYXbMMI","appkey":"Gk8i3b8sccXvUCUCkuapvLap","server_urls":"https://aijeymbe.api.lncldglobal.com","placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.21"},"waline":{"server_url":null,"reaction":false,"version":2},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false}},"post":{"author_label":{"enable":true,"auto":true,"custom_label_list":["Trainee","Engineer","Architect"]},"word_count":{"wordcount":false,"min2read":false},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":false,"reward":{"enable":false,"img_link":null,"text":null}},"website_count":{"busuanzi_count":{"enable":false,"site_uv":false,"site_pv":false,"page_pv":false}},"version":"3.8.6"}
     KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
     KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
     KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original article title","author":"Original article author","link":"Original article link"}
@@ -138,9 +138,15 @@
                         </li>
                     
                     
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
                 </ul>
             </div>
             <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
                 
                 <div class="icon-item menu-bar">
                     <div class="menu-bar-middle"></div>
@@ -418,6 +424,86 @@
                     
 
 
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;Comments
+        </div>
+        
+            
+
+    <div class="valine-container">
+        <script  src="//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js"></script>
+        <div id="vcomments"></div>
+        <script >
+          function loadValine() {
+
+            const config = {
+              el: '#vcomments',
+              appId: 'aIJeYmBe1sYhsmeD0Wx4ImDN-MdYXbMMI',
+              appKey: 'Gk8i3b8sccXvUCUCkuapvLap',
+              meta: ['nick', 'mail', 'link'],
+              avatar: 'wavatar',
+              enableQQ: true,
+              placeholder: '',
+              lang: 'en'.toLowerCase()
+            }
+
+            if ('https://aijeymbe.api.lncldglobal.com') {
+              config.serverURLs = 'https://aijeymbe.api.lncldglobal.com'
+            }
+
+            new Valine(config)
+
+            function getAuthor(language) {
+              switch (language) {
+                case 'en':
+                  return 'Author'
+                case 'zh-CN':
+                  return '博主'
+                case 'zh-TW':
+                  return '站長'
+                default:
+                  return 'Master'
+              }
+            }
+
+            // Add "Author" identify
+            const getValineDomTimer = setInterval(() => {
+              const vcards = document.querySelectorAll('#vcomments .vcards .vcard')
+              if (vcards.length > 0) {
+                let author = 'Jsjsj'
+
+                if (author) {
+                  for (let vcard of vcards) {
+                    const vnick_dom = vcard.querySelector('.vhead .vnick')
+                    const vnick = vnick_dom.innerHTML
+                    if (vnick === author) {
+                      vnick_dom.innerHTML = `${vnick} <span class="author">${getAuthor(KEEP.hexo_config.language)}</span>`
+                    }
+                  }
+                }
+                clearInterval(getValineDomTimer)
+              } else {
+                clearInterval(getValineDomTimer)
+              }
+            }, 2000)
+          }
+
+          if ('false' === 'true') {
+            const loadValineTimeout = setTimeout(() => {
+              loadValine()
+              clearTimeout(loadValineTimeout)
+            }, 1000)
+          } else {
+            window.addEventListener('DOMContentLoaded', loadValine)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
 
 
 
@@ -426,6 +512,15 @@
             </div>
         </div>
 
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%9E%E5%B8%B8%E8%A7%84PWN-Web-pwn-%E4%B8%80"><span class="nav-number">1.</span> <span class="nav-text">非常规PWN&amp;Web pwn(一)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%EF%BC%9A%E6%9C%80%E8%BF%91%E5%9C%A8%E5%AD%A6%E9%9D%9E%E5%B8%B8%E8%A7%84pwn%EF%BC%8C%E7%84%B6%E5%90%8E%E6%83%B3%E5%88%B0%E4%BA%86%E4%B9%8B%E5%89%8D%E7%9A%84php-pwn%EF%BC%8C%E7%84%B6%E5%90%8E%E5%B0%B1%E8%A7%89%E5%BE%97%E5%BE%88%E6%9C%89%E6%84%8F%E6%80%9D%EF%BC%8C%E5%8E%9F%E6%9D%A5PHP%E4%B9%9F%E5%8F%AF%E4%BB%A5%E8%A2%ABpwn%EF%BC%88%E4%B9%9F%E8%AE%B8%E6%88%91%E6%98%AF%E5%9C%9F%F0%9F%90%95%EF%BC%8C%E4%B9%8B%E5%89%8D%E4%B8%80%E7%9B%B4%E6%83%B3%E5%A4%8D%E7%8E%B0%E5%AD%A6%E4%B9%A0%EF%BC%8C%E4%B8%80%E7%9B%B4%E6%8B%96%E5%88%B0%E7%8E%B0%E5%9C%A8%EF%BC%8C%E5%85%B6%E5%AE%9Eweb-php-pwn%E5%9C%A8%E5%89%8D%E4%B8%A4%E5%B9%B4%E5%9B%BD%E9%99%85%E6%AF%94%E8%B5%9B%E4%B8%AD%E8%80%83%E5%AF%9F%E7%9A%84%E5%BE%88%E5%A4%9A%EF%BC%8C%E6%84%9F%E8%A7%89%E4%B9%9F%E5%BE%88%E5%81%8F%E5%90%91%E4%BA%8E%E5%AE%9E%E6%88%98web%EF%BC%8C%E6%89%80%E4%BB%A5%E6%9C%AC%E7%AF%87%E6%9D%A5%E5%8F%99%E8%BF%B0%E4%B8%8B%EF%BC%8C%E6%9C%80%E5%90%8E%E5%86%8D%E4%BB%A52020De1CTF-mixture%E8%BF%99%E9%81%93%E9%A2%98%E5%8F%99%E8%BF%B0%E4%B8%8B%E7%AE%80%E5%8D%95%E7%9A%84%E5%81%9A%E9%A2%98%E6%8A%80%E5%B7%A7%EF%BC%88%E8%BF%99%E4%B8%AA%E5%A4%A7%E6%A6%82%E6%94%BE%E5%9C%A8%E7%AC%AC%E4%BA%8C%E7%AF%87%E7%AB%A0%E9%87%8C"><span class="nav-number">1.0.1.</span> <span class="nav-text">前言：最近在学非常规pwn，然后想到了之前的php pwn，然后就觉得很有意思，原来PHP也可以被pwn（也许我是土🐕，之前一直想复现学习，一直拖到现在，其实web(php) pwn在前两年国际比赛中考察的很多，感觉也很偏向于实战web，所以本篇来叙述下，最后再以2020De1CTF-mixture这道题叙述下简单的做题技巧（这个大概放在第二篇章里</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#php-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">1.1.</span> <span class="nav-text">php 环境搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A%E9%80%9A%E8%BF%87%E6%9C%AC%E7%AF%87webpwn%E8%83%BD%E5%85%A5%E9%97%A8php-web-pwn-%E7%9F%A5%E9%81%93%E4%BA%86%E6%AF%94%E8%B5%9B%E4%B8%AD%E7%9A%84web-pwn%E6%98%AF%E6%80%8E%E4%B9%88%E5%81%9A%E7%9A%84%E4%B8%80%E4%B8%AA%E6%B5%81%E7%A8%8B%EF%BC%8C%E7%94%B1%E4%BA%8E%E6%97%B6%E9%97%B4%E5%8E%9F%E5%9B%A0%EF%BC%8C%E6%9C%89%E4%B8%A4%E9%81%93%E9%A2%98%E6%B2%A1%E6%9C%89%E5%8F%99%E8%BF%B0%EF%BC%8C%E8%BF%99%E4%B8%AA%E4%BC%9A%E6%94%BE%E5%88%B0%E4%B8%8B%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E9%87%8C%EF%BC%8C%E4%B8%8B%E7%AF%87%E6%96%87%E7%AB%A0%E4%BC%B0%E8%AE%A1%E4%BC%9A3%E5%A4%A9%E4%BB%A5%E5%90%8E%E5%8F%91%EF%BC%8Cwebpwn%E7%A1%AE%E5%AE%9E%E6%98%AF%E4%B8%80%E4%B8%AA%E4%BB%A4%E6%88%91%E6%84%9F%E8%A7%89%E5%81%9Apwn%E6%96%B9%E5%90%91%E6%9C%80%E6%9C%89%E6%84%8F%E6%80%9D%E7%9A%84pwn%E9%A2%98%EF%BC%8C%E5%9B%A0%E4%B8%BA%E5%AE%83%E6%98%AFweb%E5%92%8Cpwn%E7%9B%B8%E7%BB%93%E5%90%88%E8%B5%B7%E6%9D%A5%E4%BA%86%EF%BC%8C%E8%BF%99%E4%B8%AA%E9%9D%9E%E5%B8%B8%E8%A7%84pwn%E9%A2%98-%E6%98%AF%E7%9C%9F%E6%9C%89%E6%84%8F%E6%80%9D%EF%BC%8C%E7%BB%8F%E5%85%B8%E5%90%8D%E8%A8%80%EF%BC%9ANO-PWN-Rev-NO-FUN%EF%BC%81%EF%BC%81%EF%BC%81%EF%BC%81"><span class="nav-number">1.2.</span> <span class="nav-text">总结：通过本篇webpwn能入门php(web)pwn,知道了比赛中的web pwn是怎么做的一个流程，由于时间原因，有两道题没有叙述，这个会放到下一篇文章里，下篇文章估计会3天以后发，webpwn确实是一个令我感觉做pwn方向最有意思的pwn题，因为它是web和pwn相结合起来了，这个非常规pwn题 是真有意思，经典名言：NO PWN(Rev) NO FUN！！！！</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
         
     </div>
 </div>
@@ -477,8 +572,17 @@
     <ul class="tools-list border-box">
         <!-- PC TOC show toggle -->
         
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
 
         <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
         
     </ul>
 </div>
@@ -512,7 +616,15 @@
 
     <ul class="exposed-tools-list border-box">
         
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
 
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
         
 
         <li class="tools-item tool-toggle-show flex-center">
@@ -536,8 +648,48 @@
 
     <!-- local search -->
     
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
 
     <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%9E%E5%B8%B8%E8%A7%84PWN-Web-pwn-%E4%B8%80"><span class="nav-number">1.</span> <span class="nav-text">非常规PWN&amp;Web pwn(一)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%EF%BC%9A%E6%9C%80%E8%BF%91%E5%9C%A8%E5%AD%A6%E9%9D%9E%E5%B8%B8%E8%A7%84pwn%EF%BC%8C%E7%84%B6%E5%90%8E%E6%83%B3%E5%88%B0%E4%BA%86%E4%B9%8B%E5%89%8D%E7%9A%84php-pwn%EF%BC%8C%E7%84%B6%E5%90%8E%E5%B0%B1%E8%A7%89%E5%BE%97%E5%BE%88%E6%9C%89%E6%84%8F%E6%80%9D%EF%BC%8C%E5%8E%9F%E6%9D%A5PHP%E4%B9%9F%E5%8F%AF%E4%BB%A5%E8%A2%ABpwn%EF%BC%88%E4%B9%9F%E8%AE%B8%E6%88%91%E6%98%AF%E5%9C%9F%F0%9F%90%95%EF%BC%8C%E4%B9%8B%E5%89%8D%E4%B8%80%E7%9B%B4%E6%83%B3%E5%A4%8D%E7%8E%B0%E5%AD%A6%E4%B9%A0%EF%BC%8C%E4%B8%80%E7%9B%B4%E6%8B%96%E5%88%B0%E7%8E%B0%E5%9C%A8%EF%BC%8C%E5%85%B6%E5%AE%9Eweb-php-pwn%E5%9C%A8%E5%89%8D%E4%B8%A4%E5%B9%B4%E5%9B%BD%E9%99%85%E6%AF%94%E8%B5%9B%E4%B8%AD%E8%80%83%E5%AF%9F%E7%9A%84%E5%BE%88%E5%A4%9A%EF%BC%8C%E6%84%9F%E8%A7%89%E4%B9%9F%E5%BE%88%E5%81%8F%E5%90%91%E4%BA%8E%E5%AE%9E%E6%88%98web%EF%BC%8C%E6%89%80%E4%BB%A5%E6%9C%AC%E7%AF%87%E6%9D%A5%E5%8F%99%E8%BF%B0%E4%B8%8B%EF%BC%8C%E6%9C%80%E5%90%8E%E5%86%8D%E4%BB%A52020De1CTF-mixture%E8%BF%99%E9%81%93%E9%A2%98%E5%8F%99%E8%BF%B0%E4%B8%8B%E7%AE%80%E5%8D%95%E7%9A%84%E5%81%9A%E9%A2%98%E6%8A%80%E5%B7%A7%EF%BC%88%E8%BF%99%E4%B8%AA%E5%A4%A7%E6%A6%82%E6%94%BE%E5%9C%A8%E7%AC%AC%E4%BA%8C%E7%AF%87%E7%AB%A0%E9%87%8C"><span class="nav-number">1.0.1.</span> <span class="nav-text">前言：最近在学非常规pwn，然后想到了之前的php pwn，然后就觉得很有意思，原来PHP也可以被pwn（也许我是土🐕，之前一直想复现学习，一直拖到现在，其实web(php) pwn在前两年国际比赛中考察的很多，感觉也很偏向于实战web，所以本篇来叙述下，最后再以2020De1CTF-mixture这道题叙述下简单的做题技巧（这个大概放在第二篇章里</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#php-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">1.1.</span> <span class="nav-text">php 环境搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A%E9%80%9A%E8%BF%87%E6%9C%AC%E7%AF%87webpwn%E8%83%BD%E5%85%A5%E9%97%A8php-web-pwn-%E7%9F%A5%E9%81%93%E4%BA%86%E6%AF%94%E8%B5%9B%E4%B8%AD%E7%9A%84web-pwn%E6%98%AF%E6%80%8E%E4%B9%88%E5%81%9A%E7%9A%84%E4%B8%80%E4%B8%AA%E6%B5%81%E7%A8%8B%EF%BC%8C%E7%94%B1%E4%BA%8E%E6%97%B6%E9%97%B4%E5%8E%9F%E5%9B%A0%EF%BC%8C%E6%9C%89%E4%B8%A4%E9%81%93%E9%A2%98%E6%B2%A1%E6%9C%89%E5%8F%99%E8%BF%B0%EF%BC%8C%E8%BF%99%E4%B8%AA%E4%BC%9A%E6%94%BE%E5%88%B0%E4%B8%8B%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0%E9%87%8C%EF%BC%8C%E4%B8%8B%E7%AF%87%E6%96%87%E7%AB%A0%E4%BC%B0%E8%AE%A1%E4%BC%9A3%E5%A4%A9%E4%BB%A5%E5%90%8E%E5%8F%91%EF%BC%8Cwebpwn%E7%A1%AE%E5%AE%9E%E6%98%AF%E4%B8%80%E4%B8%AA%E4%BB%A4%E6%88%91%E6%84%9F%E8%A7%89%E5%81%9Apwn%E6%96%B9%E5%90%91%E6%9C%80%E6%9C%89%E6%84%8F%E6%80%9D%E7%9A%84pwn%E9%A2%98%EF%BC%8C%E5%9B%A0%E4%B8%BA%E5%AE%83%E6%98%AFweb%E5%92%8Cpwn%E7%9B%B8%E7%BB%93%E5%90%88%E8%B5%B7%E6%9D%A5%E4%BA%86%EF%BC%8C%E8%BF%99%E4%B8%AA%E9%9D%9E%E5%B8%B8%E8%A7%84pwn%E9%A2%98-%E6%98%AF%E7%9C%9F%E6%9C%89%E6%84%8F%E6%80%9D%EF%BC%8C%E7%BB%8F%E5%85%B8%E5%90%8D%E8%A8%80%EF%BC%9ANO-PWN-Rev-NO-FUN%EF%BC%81%EF%BC%81%EF%BC%81%EF%BC%81"><span class="nav-number">1.2.</span> <span class="nav-text">总结：通过本篇webpwn能入门php(web)pwn,知道了比赛中的web pwn是怎么做的一个流程，由于时间原因，有两道题没有叙述，这个会放到下一篇文章里，下篇文章估计会3天以后发，webpwn确实是一个令我感觉做pwn方向最有意思的pwn题，因为它是web和pwn相结合起来了，这个非常规pwn题 是真有意思，经典名言：NO PWN(Rev) NO FUN！！！！</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
     
 </main>
 
@@ -560,6 +712,10 @@
 
 <!-- local-search -->
 
+    
+<script src="/js/local-search.js"></script>
+
+
 
 <!-- code-block -->
 
@@ -579,6 +735,10 @@
 
 
         <!-- toc -->
+        
+            
+<script src="/js/post/toc.js"></script>
+
         
 
         <!-- copyright-info -->

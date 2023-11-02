@@ -35,7 +35,7 @@
     <script class="keep-theme-configurations">
     const KEEP = window.KEEP || {}
     KEEP.hexo_config = {"hostname":"jsjsj.top","root":"/","language":"en","path":"search.json"}
-    KEEP.theme_config = {"toc":{"enable":false,"number":false,"expand_all":false,"init_open":true,"layout":"right"},"style":{"primary_color":"#0066cc","logo":"/images/log.jpg","favicon":"/images/log.jpg","avatar":"/images/log.jpg","first_screen":{"enable":true,"background_img":"/images/bg.svg","description":null,"hitokoto":true},"scroll":{"progress_bar":true,"percent":true}},"local_search":{"enable":false,"preload":false},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"comment":{"enable":false,"use":"valine","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.21"},"waline":{"server_url":null,"reaction":false,"version":2},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false}},"post":{"author_label":{"enable":true,"auto":true,"custom_label_list":["Trainee","Engineer","Architect"]},"word_count":{"wordcount":false,"min2read":false},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":false,"reward":{"enable":false,"img_link":null,"text":null}},"website_count":{"busuanzi_count":{"enable":false,"site_uv":false,"site_pv":false,"page_pv":false}},"version":"3.8.6"}
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"style":{"primary_color":"#0066cc","logo":"/images/log.jpg","favicon":"/images/log.jpg","avatar":"/images/log.jpg","first_screen":{"enable":true,"background_img":"/images/bg.svg","description":null,"hitokoto":true},"scroll":{"progress_bar":true,"percent":true}},"local_search":{"enable":true,"preload":true},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"comment":{"enable":true,"use":"valine","valine":{"appid":"aIJeYmBe1sYhsmeD0Wx4ImDN-MdYXbMMI","appkey":"Gk8i3b8sccXvUCUCkuapvLap","server_urls":"https://aijeymbe.api.lncldglobal.com","placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.21"},"waline":{"server_url":null,"reaction":false,"version":2},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false}},"post":{"author_label":{"enable":true,"auto":true,"custom_label_list":["Trainee","Engineer","Architect"]},"word_count":{"wordcount":false,"min2read":false},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":false,"reward":{"enable":false,"img_link":null,"text":null}},"website_count":{"busuanzi_count":{"enable":false,"site_uv":false,"site_pv":false,"page_pv":false}},"version":"3.8.6"}
     KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
     KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
     KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original article title","author":"Original article author","link":"Original article link"}
@@ -138,9 +138,15 @@
                         </li>
                     
                     
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
                 </ul>
             </div>
             <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
                 
                 <div class="icon-item menu-bar">
                     <div class="menu-bar-middle"></div>
@@ -478,6 +484,86 @@
                     
 
 
+    <div class="comments-container border-box">
+        <div id="comments-anchor" class="comment-area-title border-box">
+            <i class="fas fa-comments"></i>&nbsp;Comments
+        </div>
+        
+            
+
+    <div class="valine-container">
+        <script  src="//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js"></script>
+        <div id="vcomments"></div>
+        <script >
+          function loadValine() {
+
+            const config = {
+              el: '#vcomments',
+              appId: 'aIJeYmBe1sYhsmeD0Wx4ImDN-MdYXbMMI',
+              appKey: 'Gk8i3b8sccXvUCUCkuapvLap',
+              meta: ['nick', 'mail', 'link'],
+              avatar: 'wavatar',
+              enableQQ: true,
+              placeholder: '',
+              lang: 'en'.toLowerCase()
+            }
+
+            if ('https://aijeymbe.api.lncldglobal.com') {
+              config.serverURLs = 'https://aijeymbe.api.lncldglobal.com'
+            }
+
+            new Valine(config)
+
+            function getAuthor(language) {
+              switch (language) {
+                case 'en':
+                  return 'Author'
+                case 'zh-CN':
+                  return '博主'
+                case 'zh-TW':
+                  return '站長'
+                default:
+                  return 'Master'
+              }
+            }
+
+            // Add "Author" identify
+            const getValineDomTimer = setInterval(() => {
+              const vcards = document.querySelectorAll('#vcomments .vcards .vcard')
+              if (vcards.length > 0) {
+                let author = 'Jsjsj'
+
+                if (author) {
+                  for (let vcard of vcards) {
+                    const vnick_dom = vcard.querySelector('.vhead .vnick')
+                    const vnick = vnick_dom.innerHTML
+                    if (vnick === author) {
+                      vnick_dom.innerHTML = `${vnick} <span class="author">${getAuthor(KEEP.hexo_config.language)}</span>`
+                    }
+                  }
+                }
+                clearInterval(getValineDomTimer)
+              } else {
+                clearInterval(getValineDomTimer)
+              }
+            }, 2000)
+          }
+
+          if ('false' === 'true') {
+            const loadValineTimeout = setTimeout(() => {
+              loadValine()
+              clearTimeout(loadValineTimeout)
+            }, 1000)
+          } else {
+            window.addEventListener('DOMContentLoaded', loadValine)
+          }
+        </script>
+    </div>
+
+
+        
+    </div>
+
 
 
 
@@ -486,6 +572,15 @@
             </div>
         </div>
 
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CTF-Angr-%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8C%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">CTF Angr 符号执行学习（一）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%EF%BC%9A%E6%9C%80%E8%BF%91%E5%AF%B9%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E5%93%BC%E6%84%9F%E5%85%B4%E8%B6%A3%EF%BC%8C%E7%99%BE%E5%BA%A6%E4%BA%86%E4%B8%8B%EF%BC%8C%E5%8F%91%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E7%9A%84%E4%B8%80%E4%B8%AA%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B9%8B%E4%B8%80Angr%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8C%EF%BC%8C%E6%84%9F%E8%A7%89%E5%BE%88%E6%9C%89%E6%84%8F%E6%80%9D%E5%86%8D%E5%8A%A0%E4%B8%8A%E4%B9%8B%E5%89%8D%E6%AF%94%E8%B5%9B%E4%B9%9F%E6%9C%89%E5%BE%88%E5%A4%9A%E5%85%B3%E4%BA%8EAngr%E7%9A%84%E9%A2%98%E7%9B%AE%EF%BC%8Cangr%E4%B9%9F%E5%8F%AF%E4%BB%A5%E5%AF%B9%E6%8A%97%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86ollvm%E8%BF%99%E4%BA%9B%EF%BC%8C%E6%84%9F%E8%A7%89%E4%BB%A5%E5%90%8E%E7%94%A8%E5%A4%84%E8%9B%AE%E5%A4%A7%E7%9A%84%EF%BC%8C%E4%BA%8E%E6%98%AF%E5%B0%B1%E5%AD%A6%E4%BA%86%E5%AD%A6%EF%BC%8C%E8%BF%99%E9%87%8C%E8%AE%B0%E5%BD%95%E4%B8%8B%E7%AC%94%E8%AE%B0%EF%BC%8C%E5%8F%91%E5%88%B0%E5%8D%9A%E5%AE%A2%E9%87%8C%E5%92%8C%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7%E9%87%8C%E4%BE%9B%E5%A4%A7%E5%AE%B6%E5%AD%A6%E4%B9%A0%EF%BC%8C%E5%AD%A6%E4%BA%86%E4%B8%80%E5%A4%A9%EF%BC%8C%E6%89%8D%E5%88%9A%E5%AD%A6%E5%88%B007%E6%96%87%E4%BB%B6%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8C%E5%8C%96%EF%BC%8C%E5%B0%B1%E5%88%86%E5%88%AB%E6%80%BB%E7%BB%93%E6%88%90%E4%BA%86%E4%B8%80%E3%80%81%E4%BA%8C%E3%80%81%E4%B8%89%E7%AF%87%EF%BC%8C%E5%A4%AA%E8%8F%9C%E4%BA%86"><span class="nav-number">1.1.</span> <span class="nav-text">前言：最近对自动化二进制漏洞挖掘哼感兴趣，百度了下，发现自动化二进制漏洞挖掘的一个核心技术之一Angr符号执行，感觉很有意思再加上之前比赛也有很多关于Angr的题目，angr也可以对抗代码混淆ollvm这些，感觉以后用处蛮大的，于是就学了学，这里记录下笔记，发到博客里和微信公众号里供大家学习，学了一天，才刚学到07文件符号执行化，就分别总结成了一、二、三篇，太菜了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%8100"><span class="nav-number">1.2.</span> <span class="nav-text">一、00</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%8101"><span class="nav-number">1.3.</span> <span class="nav-text">二、01</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%8102"><span class="nav-number">1.4.</span> <span class="nav-text">三、02</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%8103-regs-%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">1.5.</span> <span class="nav-text">四、03  regs 寄存器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%8104-stack"><span class="nav-number">1.6.</span> <span class="nav-text">五、04 stack</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%8106-%E5%8A%A8%E6%80%81memory"><span class="nav-number">1.7.</span> <span class="nav-text">七、06 动态memory</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
         
     </div>
 </div>
@@ -537,8 +632,17 @@
     <ul class="tools-list border-box">
         <!-- PC TOC show toggle -->
         
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
 
         <!-- PC go comment -->
+        
+            <li class="tools-item flex-center go-to-comments">
+                <i class="fas fa-comment"></i>
+                <span class="post-comments-count"></span>
+            </li>
         
     </ul>
 </div>
@@ -572,7 +676,15 @@
 
     <ul class="exposed-tools-list border-box">
         
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
 
+        
+            <li class="tools-item go-to-comments-tablet flex-center">
+                <i class="fas fa-comment"></i>
+            </li>
         
 
         <li class="tools-item tool-toggle-show flex-center">
@@ -596,8 +708,48 @@
 
     <!-- local search -->
     
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
 
     <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CTF-Angr-%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8C%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">CTF Angr 符号执行学习（一）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80%EF%BC%9A%E6%9C%80%E8%BF%91%E5%AF%B9%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E5%93%BC%E6%84%9F%E5%85%B4%E8%B6%A3%EF%BC%8C%E7%99%BE%E5%BA%A6%E4%BA%86%E4%B8%8B%EF%BC%8C%E5%8F%91%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E7%9A%84%E4%B8%80%E4%B8%AA%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B9%8B%E4%B8%80Angr%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8C%EF%BC%8C%E6%84%9F%E8%A7%89%E5%BE%88%E6%9C%89%E6%84%8F%E6%80%9D%E5%86%8D%E5%8A%A0%E4%B8%8A%E4%B9%8B%E5%89%8D%E6%AF%94%E8%B5%9B%E4%B9%9F%E6%9C%89%E5%BE%88%E5%A4%9A%E5%85%B3%E4%BA%8EAngr%E7%9A%84%E9%A2%98%E7%9B%AE%EF%BC%8Cangr%E4%B9%9F%E5%8F%AF%E4%BB%A5%E5%AF%B9%E6%8A%97%E4%BB%A3%E7%A0%81%E6%B7%B7%E6%B7%86ollvm%E8%BF%99%E4%BA%9B%EF%BC%8C%E6%84%9F%E8%A7%89%E4%BB%A5%E5%90%8E%E7%94%A8%E5%A4%84%E8%9B%AE%E5%A4%A7%E7%9A%84%EF%BC%8C%E4%BA%8E%E6%98%AF%E5%B0%B1%E5%AD%A6%E4%BA%86%E5%AD%A6%EF%BC%8C%E8%BF%99%E9%87%8C%E8%AE%B0%E5%BD%95%E4%B8%8B%E7%AC%94%E8%AE%B0%EF%BC%8C%E5%8F%91%E5%88%B0%E5%8D%9A%E5%AE%A2%E9%87%8C%E5%92%8C%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7%E9%87%8C%E4%BE%9B%E5%A4%A7%E5%AE%B6%E5%AD%A6%E4%B9%A0%EF%BC%8C%E5%AD%A6%E4%BA%86%E4%B8%80%E5%A4%A9%EF%BC%8C%E6%89%8D%E5%88%9A%E5%AD%A6%E5%88%B007%E6%96%87%E4%BB%B6%E7%AC%A6%E5%8F%B7%E6%89%A7%E8%A1%8C%E5%8C%96%EF%BC%8C%E5%B0%B1%E5%88%86%E5%88%AB%E6%80%BB%E7%BB%93%E6%88%90%E4%BA%86%E4%B8%80%E3%80%81%E4%BA%8C%E3%80%81%E4%B8%89%E7%AF%87%EF%BC%8C%E5%A4%AA%E8%8F%9C%E4%BA%86"><span class="nav-number">1.1.</span> <span class="nav-text">前言：最近对自动化二进制漏洞挖掘哼感兴趣，百度了下，发现自动化二进制漏洞挖掘的一个核心技术之一Angr符号执行，感觉很有意思再加上之前比赛也有很多关于Angr的题目，angr也可以对抗代码混淆ollvm这些，感觉以后用处蛮大的，于是就学了学，这里记录下笔记，发到博客里和微信公众号里供大家学习，学了一天，才刚学到07文件符号执行化，就分别总结成了一、二、三篇，太菜了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%8100"><span class="nav-number">1.2.</span> <span class="nav-text">一、00</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%8101"><span class="nav-number">1.3.</span> <span class="nav-text">二、01</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%8102"><span class="nav-number">1.4.</span> <span class="nav-text">三、02</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%8103-regs-%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">1.5.</span> <span class="nav-text">四、03  regs 寄存器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%8104-stack"><span class="nav-number">1.6.</span> <span class="nav-text">五、04 stack</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%8106-%E5%8A%A8%E6%80%81memory"><span class="nav-number">1.7.</span> <span class="nav-text">七、06 动态memory</span></a></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
     
 </main>
 
@@ -620,6 +772,10 @@
 
 <!-- local-search -->
 
+    
+<script src="/js/local-search.js"></script>
+
+
 
 <!-- code-block -->
 
@@ -639,6 +795,10 @@
 
 
         <!-- toc -->
+        
+            
+<script src="/js/post/toc.js"></script>
+
         
 
         <!-- copyright-info -->
