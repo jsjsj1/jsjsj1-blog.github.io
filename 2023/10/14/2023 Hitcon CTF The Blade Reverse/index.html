@@ -35,7 +35,7 @@
     <script class="keep-theme-configurations">
     const KEEP = window.KEEP || {}
     KEEP.hexo_config = {"hostname":"jsjsj.top","root":"/","language":"en","path":"search.json"}
-    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"style":{"primary_color":"#0066cc","logo":"/images/log.jpg","favicon":"/images/log.jpg","avatar":"/images/log.jpg","first_screen":{"enable":true,"background_img":"/images/bg.svg","description":null,"hitokoto":true},"scroll":{"progress_bar":true,"percent":true}},"local_search":{"enable":true,"preload":true},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"default"},"pjax":{"enable":false},"lazyload":{"enable":false},"comment":{"enable":true,"use":"valine","valine":{"appid":"aIJeYmBe1sYhsmeD0Wx4ImDN-MdYXbMMI","appkey":"Gk8i3b8sccXvUCUCkuapvLap","server_urls":"https://aijeymbe.api.lncldglobal.com","placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.21"},"waline":{"server_url":null,"reaction":false,"version":2},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false}},"post":{"author_label":{"enable":true,"auto":true,"custom_label_list":["Trainee","Engineer","Architect"]},"word_count":{"wordcount":false,"min2read":false},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":false,"reward":{"enable":false,"img_link":null,"text":null}},"website_count":{"busuanzi_count":{"enable":false,"site_uv":false,"site_pv":false,"page_pv":false}},"version":"3.8.6"}
+    KEEP.theme_config = {"toc":{"enable":true,"number":true,"expand_all":true,"init_open":true,"layout":"right"},"style":{"primary_color":"#0066cc","logo":"/images/log.jpg","favicon":"/images/log.jpg","avatar":"/images/log.jpg","first_screen":{"enable":true,"background_img":"/images/bg.svg","description":null,"hitokoto":true},"scroll":{"progress_bar":true,"percent":true}},"local_search":{"enable":true,"preload":true},"code_block":{"tools":{"enable":true,"style":"mac"},"highlight_theme":"default"},"pjax":{"enable":false},"lazyload":{"enable":true},"comment":{"enable":true,"use":"valine","valine":{"appid":"aIJeYmBe1sYhsmeD0Wx4ImDN-MdYXbMMI","appkey":"Gk8i3b8sccXvUCUCkuapvLap","server_urls":"https://aijeymbe.api.lncldglobal.com","placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.21"},"waline":{"server_url":null,"reaction":false,"version":2},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false}},"post":{"author_label":{"enable":true,"auto":true,"custom_label_list":["Trainee","Engineer","Architect"]},"word_count":{"wordcount":false,"min2read":false},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":true,"share":true,"reward":{"enable":false,"img_link":null,"text":null}},"website_count":{"busuanzi_count":{"enable":false,"site_uv":false,"site_pv":false,"page_pv":false}},"version":"3.8.6"}
     KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
     KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
     KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original article title","author":"Original article author","link":"Original article link"}
@@ -307,15 +307,35 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">256</span>, <span class="number">64</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">bytearray</span>(<span class="built_in">range</span>(i, i+<span class="number">64</span>)).<span class="built_in">hex</span>())</span><br></pre></td></tr></table></figure>
 
 <p>这里先放这，我们测试的数据是flag 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ{} 先把加密前的数据提取出来，我把断点下在了这个位置</p>
-<p><img src="/images/re/1.png"></p>
+<p><img  
+                     lazyload
+                     alt="image"
+                     data-src="/images/re/1.png"
+                     
+                ></p>
 <p>提取flag变量里的数据</p>
 <p>数据是HfVl{qPcCYNMoRi6D7Jr}espOL3FhwdWAtTGZba4Ugjvnx1QkKE2IS9yuz5BX08m</p>
 <p>这是打乱后的字符串，也就是在经历下面加密前的字符串</p>
 <p>下面我们用上面hex序列获取加密后的数据，为什么要生成256，因为整个wile循环是256所以我们要生成256个字字节分别进行64个字节的处理，总共调4次即可</p>
 <p>我把断点下在了如下的位置：</p>
-<p><img src="/images/re/2.png"></p>
-<p><img src="/images/re/3.png"></p>
-<p><img src="/images/re/4.png"></p>
+<p><img  
+                     lazyload
+                     alt="image"
+                     data-src="/images/re/2.png"
+                     
+                ></p>
+<p><img  
+                     lazyload
+                     alt="image"
+                     data-src="/images/re/3.png"
+                     
+                ></p>
+<p><img  
+                     lazyload
+                     alt="image"
+                     data-src="/images/re/4.png"
+                     
+                ></p>
 <p>我下了如图两个断点，一个是加密前（打乱后），另一个是整个执行完一次后的加密</p>
 <p>我们动调的时候用idapython脚本去把flag变量值给改下，脚本如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> idaapi</span><br><span class="line"><span class="keyword">import</span> idc</span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取当前选中的地址</span></span><br><span class="line">current_address = idc.get_screen_ea()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取堆栈上的指针变量地址</span></span><br><span class="line">stack_pointer = <span class="number">0x556646C923E0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 要写入的非常长的数据按小端序存储</span></span><br><span class="line">data = <span class="built_in">bytes</span>.fromhex(<span class="string">&quot;000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f404142434445464748494a4b4c4d4e4f505152535455565758595a5b5c5d5e5f606162636465666768696a6b6c6d6e6f707172737475767778797a7b7c7d7e7f808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9fa0a1a2a3a4a5a6a7a8a9aaabacadaeafb0b1b2b3b4b5b6b7b8b9babbbcbdbebfc0c1c2c3c4c5c6c7c8c9cacbcccdcecfd0d1d2d3d4d5d6d7d8d9dadbdcdddedfe0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8f9fafbfcfdfeff&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 逐字节将数据按小端序写入指定地址</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(data), <span class="number">4</span>):</span><br><span class="line">    value = struct.unpack(<span class="string">&quot;&lt;I&quot;</span>, data[i:i+<span class="number">4</span>])[<span class="number">0</span>]  <span class="comment"># 小端序</span></span><br><span class="line">    idaapi.patch_dword(stack_pointer + i, value)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印结果</span></span><br><span class="line">idaapi.msg(<span class="string">&quot;数据已按小端序写入堆栈地址: 0x&#123;:X&#125;\n&quot;</span>.<span class="built_in">format</span>(stack_pointer))</span><br></pre></td></tr></table></figure>
@@ -366,6 +386,58 @@
                 </div>
 
                 
+                        
+<div class="article-copyright-info-container border-box">
+    <div class="copyright-info-content border-box">
+        <div class="copyright-info-top border-box">
+            <div class="post-title border-box text-ellipsis">
+                2023 Hitcon CTF The Blade Reverse
+            </div>
+
+            <div class="post-link border-box text-ellipsis">
+                2023/10/14/2023 Hitcon CTF The Blade Reverse/
+            </div>
+        </div>
+
+        <div class="copyright-info-bottom border-box">
+            <div class="post-author bottom-item">
+                <div class="type">
+                    Author
+                </div>
+                <div class="content">Jsjsj</div>
+            </div>
+
+            <div class="post-time bottom-item">
+                <div class="type">
+                    Published
+                </div>
+                <div class="content">2023-10-14 21:55</div>
+            </div>
+
+
+            <div class="post-license bottom-item">
+                <div class="type">
+                    License
+                </div>
+                <div class="content tooltip" data-tooltip-content="CC BY-NC-SA 4.0">
+                    <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed">
+                        <i class="fa-brands fa-creative-commons"></i>
+                        <i class="fa-brands fa-creative-commons-by"></i>
+                        <i class="fa-brands fa-creative-commons-nc"></i>
+                        <i class="fa-brands fa-creative-commons-sa"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <i class="copyright-bg fa-solid fa-copyright"></i>
+    </div>
+    <div class="copy-copyright-info flex-center tooltip" data-tooltip-content="Copy copyright info" data-tooltip-offset-y="-2px">
+        <i class="fa-solid fa-copy"></i>
+    </div>
+</div>
+
+                
 
                 <div class="post-bottom-tags-and-share border-box">
                     <div>
@@ -380,6 +452,29 @@
                         
                     </div>
                     <div>
+                        
+                            <div class="post-share-container border-box">
+    <ul class="share-list-wrap border-box">
+        <li class="qq share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to QQ"
+        >
+            <i class="fa-brands fa-qq"></i>
+        </li>
+        <li class="wechat share-item border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="Share to WeChat"
+            data-tooltip-img-tip="Scan by WeChat"
+            data-tooltip-img-style="background-color: #fff; top: -10px; padding: 0.6rem 0.6rem 0.1rem 0.6rem;"
+        >
+            <i class="fa-brands fa-weixin"></i>
+        </li>
+        <li class="weibo share-item border-box flex-center tooltip"
+            data-tooltip-content="Share to WeiBo"
+        >
+            <i class="fa-brands fa-weibo"></i>
+        </li>
+    </ul>
+</div>
+
                         
                     </div>
                 </div>
@@ -731,6 +826,10 @@
 
 <!-- lazyload -->
 
+    
+<script src="/js/lazyload.js"></script>
+
+
 
 <div class="">
     
@@ -748,8 +847,16 @@
 
         <!-- copyright-info -->
         
+            
+<script src="/js/post/copyright-info.js"></script>
+
+        
 
         <!-- share -->
+        
+            
+<script src="/js/post/share.js"></script>
+
         
     
 
